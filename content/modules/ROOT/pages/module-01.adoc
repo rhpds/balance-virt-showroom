@@ -29,7 +29,6 @@ In this module, you will perform three migration tasks:
 * <<compute,Live migration of a virtual machine from one node to another specific node>>
 * <<storage,Live migration of virtual machine storage from one StorageClass to another.>>
 
-include::lab-access.adoc[]
 
 [#computerand]
 == Compute Migration to a random node
@@ -60,7 +59,7 @@ In this lab, you will be performing a live migration of Virtual Machine from one
 [#computerandinstructions]
 === Instructions
 
-. Ensure you are <<labaccess,logged in to the OpenShift Console as the *admin* user>> from your *web browser* and continue to the next step.
+. Ensure you are logged in to the OpenShift Console as the *admin* user from your *web browser* and continue to the next step.
 +
 
 . From the left side panel, navigate to *Virtualization -> Virtual Machines*. Under *All projects*, select the *live-migrate* namespace and click on the Virtual Machine named *live-migrate-vm1*.
