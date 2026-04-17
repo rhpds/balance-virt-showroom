@@ -50,3 +50,5 @@
 ** xref:module-07.adoc#decmlinstructions[CLI Based Instructions]
 ** xref:module-07.adoc#decmlmonitor[Monitor the Migration]
 ** xref:module-07.adoc#decmluiinstructions[UI Based Instructions]
+
+* xref:conclusion.adoc[Conclusion]
