@@ -1,18 +1,5 @@
 = Affinity and Anti-Affinity for VM Placement
 
-ifdef::vmware[]
-.Rosetta Stone: VMware
-****
-OpenShift Affinity Rules are similar to VMWare's Virtual Machine Affinity Rules.
-If one were to also employ the OpenShift Descheduler for smart automated rescheduling of VMs, this feature would be similar to VMware's VM Affinity Rules coupled with the Distributed Resource Scheduler (DRS).
-But that is not covered in this module.
-****
-
-This lab showcases how to use and apply Node Affinity, Pod Affinity, and Pod-Anti Affinity against Virtual Machines. The lab focuses on the practical application of these principles in real-world scenarios and strengthens your technical understanding of how they work.
-
-include::lab-access.adoc[]
-
-[#nodeaffinity]
 == Node Affinity
 
 Node Affinity is a set of rules that guide the scheduler to attract a Virtual Machine to a specific node or group of nodes. These rules rely on matching labels that are applied to the nodes.
@@ -21,7 +8,6 @@ The core use case for Node Affinity is to ensure that a VM runs only on nodes th
 
 This lab will demonstrate how Node Affinity is set up and how it functions.
 
-[#nodeaffinityinstructions]
 === Instructions
 
 . Ensure you are <<labaccess,logged in to both the OpenShift Console and CLI as the *admin* user>> from your *web browser* and the *terminal* window on the right side of your screen and continue to the next step.
