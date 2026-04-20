@@ -1,51 +1,22 @@
 = Live Migration of Workloads
 
-ifdef::vmware[]
-.Rosetta Stone: VMware
-****
-In VMware this is called VMotion.
-
-VMware uses the concept of Datastores.
-VMware Datastores can be thought of as LUNs, which may or may not belong to a Datastore Cluster.
-
-.Differences
- * Different paradigm.
- * PV PVC provides it to a VM when it needs it, getting it from a StorageClass.
- * Datastore -> Cluster structure
-
-.Mapping
- * Datastore Cluster (or VM attached directly to Datastore) = StorageClass defines volume, claims against it.
-
-Datastore Clusters are a collection of Datastores and use SDRS for placement of the .VMDK files on specific Datastores.
-Storage Distributed Resource Scheduler (SDRS) can only be applied to Datastore Clusters, and is used to automate this process.
-****
-endif::[]
-
 Migrating workloads between compute nodes and storage types is a crucial feature of any modern hypervisor. OpenShift Virtualization allows the simple and easy process of migrating your virtual machine compute and storage from one place to another.
 
 In this module, you will perform three migration tasks:
 
-* <<computerand,Live migration of a virtual machine from one node to another random node>>
-* <<compute,Live migration of a virtual machine from one node to another specific node>>
-* <<storage,Live migration of virtual machine storage from one StorageClass to another.>>
+* Live migration of a virtual machine from one node to another random node.
+* Live migration of a virtual machine from one node to another specific node.
+* Live migration of virtual machine storage from one StorageClass to another.
 
 
-[#computerand]
+[[computerand]]
 == Compute Migration to a random node
 During maintenance or troubleshooting, you might need to migrate a VM to a different node. Live migration is the process of moving a running Virtual Machine Instance (VMI) to a different node without disruption.
 
-ifdef::vmware[]
-.Rosetta Stone: VMware
-****
-[NOTE]
-====
-This feature is similar to VMware's Compute vMotion feature, and Distributed Resource Scheduler (DRS) for VM placement.
-====
-****
+NOTE: This feature is similar to VMware's Compute vMotion feature, and Distributed Resource Scheduler (DRS) for VM placement.
 
 In this lab, you will be performing a live migration of Virtual Machine from one compute node to another. To do this, you will access a running VM, determine its current node, and then migrate it to another node.
 
-[#computerandrequirements]
 === Requirements
 
 * The underlying PVC must use *ReadWriteMany (RWX)* access mode
@@ -56,11 +27,7 @@ In this lab, you will be performing a live migration of Virtual Machine from one
 
 * CPU model must match on the source and destination node - you can not live migrate from Intel to AMD
 
-[#computerandinstructions]
 === Instructions
-
-. Ensure you are logged in to the OpenShift Console as the *admin* user from your *web browser* and continue to the next step.
-+
 
 . From the left side panel, navigate to *Virtualization -> Virtual Machines*. Under *All projects*, select the *live-migrate* namespace and click on the Virtual Machine named *live-migrate-vm1*.
 +
@@ -77,10 +44,7 @@ image::exercise1/01-vm-start-001.png[title="Start the Virtual Machine", link=sel
 image::exercise1/01-vm-start-002.png[title="Running Virtual Machine", link=self, window=blank, width=100%]
 +
 
-[NOTE]
-====
-To see the node the Virtual Machine is currently running on, look at the *General* box on the right hand side of the *VirtualMachine details* page for the *Node* name. In the example, the node is *worker-cluster-m2ssq-1*.
-====
+NOTE: To see the node the Virtual Machine is currently running on, look at the *General* box on the right hand side of the *VirtualMachine details* page for the *Node* name. In the example, the node is *worker-cluster-m2ssq-1*.
 +
 
 image::exercise1/01-image-compute-002.png[title="Virtual machine details", link=self, window=blank, width=100%]
@@ -107,32 +71,22 @@ image::exercise1/01-image-compute-006.png[title="VM is migrating", link=self, wi
 . A few moments after that, the Virtual Machine will return to a *Running* state.
 +
 
-[NOTE]
-====
-Looking back at the *General* box on the right hand side of the *VirtualMachine details* page, you can see that the node has changed.
-====
+NOTE: Looking back at the *General* box on the right hand side of the *VirtualMachine details* page, you can see that the node has changed.
 
 +
 image::exercise1/01-image-compute-007.png[title="VM is running", link=self, window=blank, width=100%]
 
 . The VM has migrated to a new worker node while still running.
 
-[#compute]
+[#computespec]
 == Compute Migration to a specific node
 
 During maintenance or troubleshooting, you might need to migrate a Virtual Machine to a *specific* node in the cluster.
 
-[NOTE]
-====
-The requirements for this type of migration are the same as the previous lesson.
-====
+NOTE: The requirements for this type of migration are the same as the previous lesson.
 
-[#computeinstructions]
 === Instructions
 
-. Ensure you are <<labaccess,logged in to the OpenShift Console as the *admin* user>> from your *web browser* and continue to the next step.
-
-+
 . From the left side panel, navigate to *Virtualization -> Virtual Machines*.
 
 +
@@ -166,51 +120,18 @@ image::exercise1/01-image-compute-005.png[title="Select worker node", link=self,
 image::exercise1/01-image-compute-006.png[title="VM is migrating", link=self, window=blank, width=100%]
 
 . A few moments after that, the Virtual Machine status will return to a *Running* state.
-
 +
-[NOTE]
-====
-Looking back at the *General* box on the right hand side of the *VirtualMachine details* page, you can see that the node has changed, specifically to the one you selected from the list.
-====
+
+NOTE: Looking back at the *General* box on the right hand side of the *VirtualMachine details* page, you can see that the node has changed, specifically to the one you selected from the list.
 
 image::exercise1/01-image-compute-007.png[title="VM is running", link=self, window=blank, width=100%]
 
-[#storage]
+[[storagelivemig]]
 == Storage Migration
 Storage environments often have their own lifecycles and performance profiles, so it is important to be able to move Virtual Machines between storage devices for lifecycle and performance management. OpenShift Virtualization allows the migration of PVCs from one StorageClass to another while the virtual machine is running.
 
-ifdef::vmware[]
-.Rosetta Stone: VMware
-****
-[NOTE]
-====
-This feature is similar to VMware's Storage vMotion feature.
-
-This also includes the Storage Distributed Resource Scheduler (SDRS) for disk placement.
-====
-endif::[]
-****
-
-[#storagerequirements]
-=== Requirements
-
-* The *Migration Toolkit for Containers (MTC)* Operator must be installed for storage class migrations
-
-[NOTE]
-====
-MTC has been deprecated and engineering is working on removing the *MTC* requirement for storage class migrations.
-
-This feature is targeting *4.21* and engineering plans to backport it to *4.20.z*. 
-
-You can follow https://issues.redhat.com/browse/VIRTSTRAT-97[VM Storage Migration] for more information.
-====
-
-[#storageinstructions]
 === Instructions
 
-. Ensure you are <<labaccess,logged in to the OpenShift Console as the *admin* user>> and continue to the next step.
-
-+
 . From the left side panel, navigate to *Virtualization -> Virtual Machines*.
 
 +
@@ -261,10 +182,7 @@ image::exercise1/01-image-storage-008.png[title="Migration has started", link=se
 . To view the storage migration status, navigate to *Migration for Virtualization* from the left side panel and click *Storage migrations*. The migration plan will start in the *Pending* state, move to *Running* and then to *Completed*.
 
 +
-[NOTE]
-====
-It may take over a minute for the migration to start, and five or more minutes for the migration to complete in the lab environment.
-====
+NOTE: It may take over a minute for the migration to start, and five or more minutes for the migration to complete in the lab environment.
 
 +
 image::exercise1/01-image-storage-009.png[title="Migration is running", link=self, window=blank, width=100%]
