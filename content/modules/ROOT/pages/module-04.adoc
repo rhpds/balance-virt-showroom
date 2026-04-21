@@ -1,5 +1,9 @@
 = Affinity and Anti-Affinity for VM Placement
 
+Affinity and Anti-affinity are a set of rules that allow us to select where a virtual machine can be placed by the Kubernetes scheduler when it is deployed. In many cases these rules are defined to ensure that two interdependant workloads are not placed on the same node through anti-affinity rules. Think of an application that may have two frontend web servers and a backend databaseserver with traffic load balanced evenly to the web servers. You would not want both of those VMs placed on the same node. Should an issue happen with the host system, the entire virtual application would be affected. By setting both affinity and anti-affinity rules for the placement of VMs, we can ensure situations like this don't happen. 
+
+
+[[node_affinity]]
 == Node Affinity
 
 Node Affinity is a set of rules that guide the scheduler to attract a Virtual Machine to a specific node or group of nodes. These rules rely on matching labels that are applied to the nodes.
@@ -10,11 +14,7 @@ This lab will demonstrate how Node Affinity is set up and how it functions.
 
 === Instructions
 
-. Ensure you are <<labaccess,logged in to both the OpenShift Console and CLI as the *admin* user>> from your *web browser* and the *terminal* window on the right side of your screen and continue to the next step.
-
-+
-
-. Start the *node-affinity-vm* Virtual Machine
+. Select the node-affinity namespace, and start the *node-affinity-vm* Virtual Machine that you find there.
 
 +
 [.wrap,console,role=execute]
@@ -213,20 +213,17 @@ NAME               AGE   PHASE     IP            NODENAME                 READY
 node-affinity-vm   58s   Running   10.233.0.46   worker-cluster-t96sv-2   True
 ----
 
-[#podaffinity]
+[[pod_affinity]]
 == Pod Affinity
+
 Pod Affinity is a scheduling rule that co-locates a VMs (or pods) with a specific labels onto the same node.
 
 The primary benefit of using pod affinity is to improve performance for dependent VMs or services that require low-latency communication by guaranteeing their placement on the same node.
 
 This lab will demonstrate the setup and usage of Pod Affinity.
 
-[#podaffinityinstructions]
 === Instructions
 
-. Ensure you are <<labaccess,logged in to both the OpenShift Console and CLI as the *admin* user>> from your *web browser* and the *terminal* window on the right side of your screen and continue to the next step.
-
-+
 . To begin, we are going to leverage our existing *node-affinity-vm* from the previous lab. This will serve as 1 of the 2 VMs we use to demonstrate Affinity.
 
 +
@@ -535,7 +532,7 @@ node-affinity-vm   35m    Running   10.233.0.35   worker-cluster-dvddt-1   True
 . You will now see the *pod-affinity-vm* running on the same node *node-affinity-vm* because of the pod affinity rule.
 
 
-[#podantiaffinity]
+[[pod_antiaffinity]]
 == Pod Anti-Affinity
 
 Pod Anti-Affinity is a crucial feature in achieving cross-cluster High Availability (HA) for your workloads. It work by instructing the scheduler to prevent the co-location of related VMs on the same node.
@@ -544,12 +541,8 @@ The primary benefit is to enhance application resilience. It ensues that VMs bel
 
 This lab will demonstrate the setup and usage of Pod Anti-Affinity.
 
-[#podantiaffinityinstructions]
 === Instructions
 
-. Ensure you are <<labaccess,logged in to both the OpenShift Console and CLI as the *admin* user>> from your *web browser* and the *terminal* window on the right side of your screen and continue to the next step.
-
-+
 . To begin, we are going to leverage our existing *node-affinity-vm* and the *app: fedora* label from the previous lab. This will serve as 1 of the 2 VMs we use to demonstrate Anti-Affinity.
 
 +
@@ -663,10 +656,7 @@ node-affinity-vm        5m   Running   10.233.0.46   worker-cluster-dvddt-1   Tr
 ----
 
 +
-[NOTE]
-====
-It's possible your *pod-anti-affinity-vm* and *node-affinity-vm* are already on different nodes because the cluster is lightly loaded. Even so, you can restart the pods endlessly and they never will end up on the same node.
-====
+NOTE: It's possible your *pod-anti-affinity-vm* and *node-affinity-vm* are already on different nodes because the cluster is lightly loaded. Even so, you can restart the pods endlessly and they never will end up on the same node.
 
 . As we noted in the last lab, without an external force to move or restart the VM, new Affinity rules do not take effect.
 
@@ -711,28 +701,8 @@ node-affinity-vm       58m   Running   10.233.0.35   worker-cluster-dvddt-1     
 +
 . You will now see the *pod-anti-affinity-vm* running on a different node from *node-affinity-vm* because of the pod anti-affinity rule.
 
-[IMPORTANT]
-====
-Stop the *node-affinity-vm*, *pod-affinity-vm* and *pod-anti-affinity-vm* VMs using *virtctl* from your *Terminal* window to ensure you have enough resources for the next labs.
+IMPORTANT: Stop the *node-affinity-vm*, *pod-affinity-vm* and *pod-anti-affinity-vm* VMs from this module to ensure that there are enough resources to continue for the next module
 
-[,shell,role="execute wrap",subs="attributes"]
-----
-virtctl stop node-affinity-vm -n affinity
-----
+== Summary
 
-*VM node-affinity-vm was scheduled to stop*
-
-[,shell,role="execute wrap",subs="attributes"]
-----
-virtctl stop pod-affinity-vm -n affinity
-----
-
-*VM pod-affinity-vm was scheduled to stop*
-
-[,shell,role="execute wrap",subs="attributes"]
-----
-virtctl stop pod-anti-affinity-vm -n affinity
-----
-
-*VM pod-anti-affinity-vm was scheduled to stop*
-====
+By ensuring that Affinity and Anti-Affinity rules are set appropriately for your cluster nodes and workloads you can help ensure that there is no single point of failure within your cluster for your virtual machines or other applications.

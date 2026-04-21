@@ -1,33 +1,11 @@
-[#fencing]
 = Fencing and How to Handle Node Failure
-
-ifdef::vmware[]
-.Rosetta Stone: VMware
-****
-EN GUARDE! 🤺
-
-Fencing and Self Node Remediation are similar to VMware's Infrastructure HA and Node Failure features.
-****
-endif::[]
 
 Fencing is a vital mechanism that safeguards cluster resources and ensures data integrity. It works by isolating an unresponsive or failed node. This process is crucial to prevent the "split-brain" scenario, which occurs when multiple nodes try to write to shared storage simultaneously, inevitably leading to data corruption.
 
 This lab demonstrates the capabilities of the *Node Health Check Operator* and the *Self Node Remediation Operator*. You will simulate a node failure to observe the virtual machine migration process and subsequent node recovery.
 
-[IMPORTANT]
-====
-While this lab demonstrates fencing through the *Node Health Check (NHC)* and *Self Node Remediation (SNR)* operators, the recommendation to the field is that you strongly push customers towards *Fence Agents Remediation* as it provides the fastest workload recovery time.
 
-NHC and SNR are only recommended in situations where there is no management interface or if the BMC is unreachable from cluster.
-
-Work is still evolving in this space. Engineering is working on additional enhancements to bring recovery time to under 60 seconds.
-
-You can follow https://issues.redhat.com/browse/VIRTSTRAT-77[Fencing: Additional out-of-band health checks for faster remediation] as that work progresses.
-====
-
-include::lab-access.adoc[]
-
-[#fencinginstructions]
+[[fencing_instructions]]
 == Instructions
 
 . Ensure you are <<labaccess,logged in to both the OpenShift Console and CLI as the *admin* user>> from your *web browser* and the *terminal* window on the right side of your screen and continue to the next step.
@@ -213,14 +191,8 @@ fencing-vm1   10s   Running      10.232.2.41   worker-cluster-r2k68-3   True
 +
 
 
-[IMPORTANT]
-====
-Stop the *fencing-vm1* VM using *virtctl* from your *Terminal* window to ensure you have enough resources for the next labs.
+IMPORTANT: Be sure to shut down *fencing-vm-1* when you complete this module to ensure that there are enough resources in the cluster to complete the other modules.
 
-[,shell,role="execute wrap",subs="attributes"]
-----
-virtctl stop fencing-vm1 -n fencing
-----
+== Summary
 
-*VM fencing-vm1 was scheduled to stop*
-====
+In this module we explored node remediation and fencing, which are critical to configure when it comes to protecting your virtualized workloads in the case of a node failure. Appropriate fencing takes a stalled node offline allowing workloads that were scheduled there to be appropriately scheduled elsewhere in the cluster, and to continue running without creating a split-brain scenario that could endanger the state of the VM.

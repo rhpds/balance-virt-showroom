@@ -3,7 +3,6 @@ image::conclusion/00_Thank_You.png[link=self, window=blank, width=100%]
 
 We hope you have enjoyed {lab_name} and learning more about *OpenShift Virtualization* and how it can be a useful tool for both the import and management of legacy virtual machines, as well as a stepping stone on the path of application modernization.
 
-[key_takeaways]
 == Key Takeaways
 
 * OpenShift Virtualization is solution oriented, providing you with a mature, stable, and scalable solution that's easy to get started with.
@@ -15,7 +14,6 @@ We hope you have enjoyed {lab_name} and learning more about *OpenShift Virtualiz
 * OpenShift Virtualization can help you set a strong foundation for tradtional workloads, while building skills for the future with a modern application platform.
 
 
-[additional_info]
 == Additonal Information
 
 === Free Ebook: 15 Reasons to Adopt Red Hat OpenShift Virtualization

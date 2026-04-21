@@ -1,16 +1,5 @@
 = Decentralized Live Migration
 
-ifdef::vmware[]
-.Rosetta Stone: VMware
-****
-OpenShift does live migration of storage and compute, as does VMware.
-
-Storage migration in VMware is already built in.
-
-This feature provides similar functionality and benefit as Cross-vCenter vMotion.
-****
-endif::[]
-
 A decentralized live migration is a variation of a storage live migration that allows you to migrate a running *VirtualMachine* between *namespaces* and *clusters*.
 
 This can be useful to:
@@ -23,17 +12,14 @@ This can be useful to:
 
 This lab demonstrates the forthcoming Tech Preview capabilities of Decentralized Live Migration. In this lab, we will walk through the live migration of a *VirtualMachine* from one *Namespace* to another. The process of live migrating between namespaces follows the same process as if you were to migrate a *VirtualMachine* between 2 clusters.
 
-[NOTE]
-=====
-The UI based workflow is not fully functional yet. During this lab we will introduce you to the UI workflow, but perform the migration through the CLI.
-=====
+[[NOTE]] This portion of the lab introduces a new feature that just became GA in OpenShift 4.21. As such, the UI-based workflow is not fully developed and should improve dramatically in upcoming OpenShift releases. During this lab we will introduce you to the UI workflow, but perform the migration tasks through the CLI.
 
-[#howdeclm]
+[[how_cclm]]
 == How does it work?
 
 The migration involves two *VirtualMachineInstances* and two *VirtualMachineInstanceMigration* objects. Like a storage live migration, disk contents are copied over the network to the receiving *VirtualMachine*. The key difference is that the receiving virtual machine has a completely separate *VirtualMachineInstance*. In order to coordinate the migration, the status of the source and target *VirtualMachineInstance* has to be synchronized. A dedicated synchronization controller, running in the *openshift-cnv* namespace facilitates communication between the source and target *VirtualMachineInstances*.
 
-[#decmlrequirements]
+[[requirements]]
 == Requirements
 
 These requirements have already been enabled on your cluster and are noted for your reference.
@@ -41,9 +27,8 @@ These requirements have already been enabled on your cluster and are noted for y
 * The *Migration Toolkit for Virtualization (MTV)* Operator must be installed with the feature *feature_ocp_live_migration* set to *true* when creating the *ForkliftController* CR
 * You must enable the *DecentralizedLiveMigration* *featureGate* on the *hyperconverged* Custom Resource
 
-include::lab-access.adoc[]
 
-[#decmlinstructions]
+[[instructions]]
 == CLI Based Instructions
 
 . Ensure you are <<labaccess,logged in to both the OpenShift Console and CLI as the *admin* user>> from your *web browser* and the *terminal* window on the right side of your screen and continue to the next step.
@@ -496,15 +481,10 @@ This marks the successful completion of the *Namespace* to *Namespace* live migr
 +
 image::exercise7/image9-ui-dest-running-src-stopped.png[title="Destination Virtual Machine - Running & Source Virtual Machine - Stopped, link=self, window=blank, width=100%]
 
-[#decmluiinstructions]
+[[ui_instructions]]
 == UI Based Instructions
 
-[IMPORTANT]
-=====
-The UI based workflow is not fully functional yet. The workflow is complete, but the migration will fail when the plan is created. The purpose of this section is to introduce you to the UI based workflow.
-=====
-
-. Ensure you are <<labaccess,logged in to the OpenShift Console as the *admin* user>> from your *web browser* and continue to the next step.
+IMPORTANT: As noted earlier, this section is just a review of the UI-based workflow which is not fully developed yet. The workflow is complete, but there will be failures denoted when the plan is registered. Still we'd like to see this as an example of future enhancements coming to OpenShift in the near future.
 
 . Before you start, cleanup and VMs from the CLI based migration.
 
@@ -686,17 +666,14 @@ You can follow https://issues.redhat.com/browse/CNV-72966[CNV-72966 - loosen (or
 +
 image::exercise7/ui/image12-plan-created-error.png[title="Plan Details", link=self, window=blank, width=100%]
 
-[IMPORTANT]
-====
-Stop the *vm-migration-ns-ns-live* VM using *virtctl* from your *Terminal* window to ensure you have enough resources for the next labs.
+[[cclm_arcade]]
+== Interactive Demo of Cross-Cluster Live Migration
 
-[.wrap,console,role=execute]
-----
-virtctl stop vm-migration-ns-ns-live -n vm-live-migration-destination
-----
 
-[source,console]
-----
-VM vm-migration-ns-ns-live was scheduled to stop
-----
-====
+
+
+
+== Summary
+
+In this module we explored decentrailized live migration within a cluster, across namespaces. This is the basic technology that allows us to live migrate workloads between remote clusters, and helps set us up for the future of a true hybrid multicloud environment.
+

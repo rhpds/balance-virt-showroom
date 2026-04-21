@@ -1,15 +1,6 @@
 = Dynamic Rescheduling of Workloads
 
-ifdef::vmware[]
-.Rosetta Stone: VMware
-****
-This feature is similar to VMware's Distributed Resource Scheduler (DRS).
-
-Similar to DRS, the OpenShift Descheduler is not a mandatory element of VM creation, but can be applied at any time.
-****
-endif::[]
-
-[#dynamicreschintro]
+[[dynamice_resch_intro]]
 == Introduction
 
 You can use the descheduler to evict pods based on specific strategies so that the pods can be rescheduled onto more appropriate nodes.  But eviction is a stop and start and no one wants their VMs restarted to achieve this.
@@ -28,7 +19,6 @@ You can benefit from descheduling running pods in situations such as the followi
 * New nodes are added to clusters.
 * Pods have been restarted too many times.
 
-[#dynamicreschobj]
 == Objectives
 
 In this module, we will guide you through the process of using the *Descheduler* using the *KubeVirtRelieveAndMigrate* profile.
@@ -38,7 +28,7 @@ In this module, we will guide you through the process of using the *Descheduler*
   *** Resource utilization: Increased resource pressure raises the overhead for running applications.
   *** Node maintenance: A higher number of containers on a node increases resource consumption and maintenance costs.
 
-[#dynamicreschreq]
+[[dynamic_resch_req]]
 == Requirements
 
 * Descheduler Operator is installed
@@ -51,7 +41,7 @@ NOTE: PSI (Pressure Stall Information) is a Linux kernel feature that measures a
 
 include::lab-access.adoc[]
 
-[#dynamicreschinstructions]
+[[dynamic_resch_instructions]]
 == Instructions
 
 . Ensure you are <<labaccess,logged in to the OpenShift CLI as the *admin* user>> from the *terminal* window on the right side of your screen and continue to the next step.

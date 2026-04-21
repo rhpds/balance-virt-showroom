@@ -9,7 +9,7 @@ In this module, you will perform three migration tasks:
 * Live migration of virtual machine storage from one StorageClass to another.
 
 
-[[computerand]]
+[[compute_rand]]
 == Compute Migration to a random node
 During maintenance or troubleshooting, you might need to migrate a VM to a different node. Live migration is the process of moving a running Virtual Machine Instance (VMI) to a different node without disruption.
 
@@ -78,7 +78,7 @@ image::exercise1/01-image-compute-007.png[title="VM is running", link=self, wind
 
 . The VM has migrated to a new worker node while still running.
 
-[#computespec]
+[[compute_spec]]
 == Compute Migration to a specific node
 
 During maintenance or troubleshooting, you might need to migrate a Virtual Machine to a *specific* node in the cluster.
@@ -126,7 +126,7 @@ NOTE: Looking back at the *General* box on the right hand side of the *VirtualMa
 
 image::exercise1/01-image-compute-007.png[title="VM is running", link=self, window=blank, width=100%]
 
-[[storagelivemig]]
+[[storage_mig]]
 == Storage Migration
 Storage environments often have their own lifecycles and performance profiles, so it is important to be able to move Virtual Machines between storage devices for lifecycle and performance management. OpenShift Virtualization allows the migration of PVCs from one StorageClass to another while the virtual machine is running.
 
@@ -215,3 +215,7 @@ virtctl stop live-migrate-vm1 -n live-migrate
 
 *VM live-migrate-vm1 was scheduled to stop*
 ====
+
+== Summary
+
+In this module we explored how we are able to migrate virtual machines between nodes in our cluster while they are still running. This live migration feature allows you to let OpenShift automate the selection of the destination node basedon free resources, or allows you as the administrator to select the node to where the VM migrates. We also explored the storage live migration feature which migrates a virtual machine's disk from one storage class to another while the machine continues to operate

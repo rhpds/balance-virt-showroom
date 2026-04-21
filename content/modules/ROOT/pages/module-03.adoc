@@ -1,31 +1,18 @@
 = Hot Plugging Resources
 
-ifdef::vmware[]
-.VMware Rosetta Stone
-****
-VMware admins typically address requests for hot-add resources through the vCenter UI if they are being done manually.
-The Aria suite, also formerly known as vRealize Insights (VRI) and vRealize Automation (VRA), and/or other 3rd party Capacity Management software is used to manage the hot-add and hot-removal of resources in an automated fashion.
-****
-endif::[]
-
 In this module, you will perform three tasks:
 
 * <<cpu,Increase the CPU and Memory of a running VM>>
 * <<disk,Add a virtual disk to a running VM and then make it persistent>>
 * <<nic,Add a network interface (NIC) to a virtual machine>>
 
-include::lab-access.adoc[]
 
-[#cpu]
+[[cpu_mem]]
 == Adding CPU and Memory to a Running VM
 In this lab, we will add additional CPU and Memory resources to a Virtual Machine by changing the Virtual Machine’s Instance Type. To do this, you will start with an existing VM that has a single vCPU and 2 GiB of memory. Using the OpenShift Virtualization console, you will modify the configuration of the VM Instance Type to a type that has 2 vCPU and 4 GiB of memory.
 
-[#cpuinstructions]
 === Instructions
 
-. Ensure you are <<labaccess,logged in to the OpenShift Console as the *admin* user>> from your *web browser* and continue to the next step.
-
-+
 . Using the *OpenShift Console*, navigate to *Virtualization → Virtual Machines*.
 
 +
@@ -121,7 +108,7 @@ NOTE: This VM image has kdump enabled, which reserves some memory for the kernel
 +
 image::exercise3/03-image-cpu-007.png[title="Verify new resources", link=self, window=blank, width=100%]
 
-[#disk]
+[[disk]]
 == Adding a Virtual Disk to a Running VM
 
 In this lab, we will add a new Disk to an existing VM. To do this, you will start with an existing VM with 1 or more Disks. Using the OpenShift Virtualization console, you will modify the configuration of the VM to include an additional hot plugged Disk.
@@ -224,9 +211,6 @@ Under *All projects*, select the *hot-plug* namespace and select the *hot-plug-v
 Click on the *Configuration* tab and select *Storage*.
 
 +
-Note the name of the object that you will remove (e.g. *dv-hot-plug-vm1-data-disk-01-um6O11*) because you may want it for the Bonus Lab later!
-
-+
 Click on the three dots on the right side of the *hot-plugged* disk and select *Detach*.
 
 +
@@ -255,76 +239,13 @@ NOTE: The detached disk still exists as a PVC. It can be re-attached, or attache
 +
 image::exercise3/03-image-disk-013.png[title="Disk is removed in OS", link=self, window=blank, width=100%]
 
-[#bonuslabinstructions]
-=== Bonus Lab - Convert a Hot Plug Disk to a Permanent Disk
 
-The steps below are optional as they are not directly relate to hot plugging a new disk. However, it may be advantageous for you to know how to convert a *hot-plugged* disk to a standard disk, which requires a VM restart.
-
-. The PVC you detached above still exists until it is deleted manually. Therefore, you can reattach the PVC as a standard disk while the VM is shut down.
-
-+
-. Navigate to *Virtualization -> Virtual Machines*, and select the *hot-plug* project. Select the VM named *hot-plug-vm1*.
-
-+
-*Stop* the VM, either by using the *square stop button* or by selecting the *Actions* menu and clicking on *Stop*.
-
-+
-image::exercise3/03-image-disk-persist-002.png[title="Stop the VM", link=self, window=blank, width=100%]
-
-+
-. Click on the *Configuration* tab, and then *Storage*.
-
-+
-Click on the *Add* pull down menu and select *Volume*.
-
-+
-image::exercise3/03-image-disk-persist-003.png[title="Add a volume", link=self, window=blank, width=100%]
-
-. Give the disk a name, if desired, and select the previously disconnected PVC from the *PersistentVolumeClaim name* dropdown (e.g. *dv-hot-plug-vm1-data-disk-01-um6O11*)
-
-+
-Click *Save*
-
-+
-image::exercise3/03-image-disk-persist-004.png[title="Select the PVC", link=self, window=blank, width=100%]
-
-+
-. Now both the boot volume and the new disk are visible in the virtual machine configuration.
-
-+
-NOTE: The new disk no longer has the *Hotplug persistent* label because it is not being added while the VM is running.
-
-+
-image::exercise3/03-image-disk-persist-005.png[title="Both disks are attached", link=self, window=blank, width=100%]
-
-+
-. Start the virtual machine by clicking on the *blue Play icon*, or by selecting the *Actions* menu and clicking *Start*.
-
-+
-image::exercise3/03-image-disk-persist-006.png[title="Both disks are attached", link=self, window=blank, width=100%]
-
-. Once the virtual machine is *Running*, click on the *Console* tab. If necessary, click the blue *Connect* button.
-
-+
-Login to the Virtual Machine using *Copy to clipboard* and *Paste to console* with the *User name* and *Password* credentials from above the console window.
-
-+
-Run *lsblk* and you can see that the disk is attached, although it may have changed names.
-
-+
-If you formatted or wrote data to the disk while it was hot plugged, you would see that the data is still on the disk.
-
-+
-image::exercise3/03-image-disk-persist-007.png[title="The disk is attached", link=self, window=blank, width=100%]
-
-[#nic]
+[[nic]]
 == Adding a NIC to a Running VM
 In this lab, we will add a new *Network Interface Card* (NIC) to an existing VM. To do this, you will start with an existing VM that has a single NIC on the pod network. Using the OpenShift Virtualization console, you will modify the configuration of the VM to include an additional NIC on a new network.
 
-[#nicinstructions]
 === Instructions
 
-. Ensure you are <<labaccess,logged in to the OpenShift Console as the *admin* user>> from your *web browser* and continue to the next step.
 
 +
 . Using the *OpenShift Console*, navigate to *Virtualization → Virtual Machines*.
@@ -406,14 +327,8 @@ You can view the new *NIC* from the operating system by running the command *ip 
 +
 image::exercise3/03-image-nic-009.png[title="New NIC is up", link=self, window=blank, width=100%]
 
-[IMPORTANT]
-====
-Stop the *hot-plug-vm1* VM using *virtctl* from your *Terminal* window to ensure you have enough resources for the next labs.
+IMPORTANT: At the end of this module be sure to shut down the virtual machine *hot-plug-vm-1* that we were working with in order to conserve lab resources for future modules.
 
-[,shell,role="execute wrap",subs="attributes"]
-----
-virtctl stop hot-plug-vm1 -n hot-plug
-----
+== Summary
 
-*VM hot-plug-vm1 was scheduled to stop*
-====
+In this module we explored how to hotplug resources on a running VM. We demonstrated this by modifying the cpu, memory, storage, and networking configurations of a running virtual machine to show that OpenShift Virtualization is a highly versatile platform capable of meeting the needs of many different use cases.

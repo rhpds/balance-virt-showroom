@@ -1,13 +1,5 @@
 = Overcommit in OpenShift Virtualization
 
-ifdef::vmware[]
-.VMware Rosetta Stone
-****
-VMware admins typically interact with CPU and memory overcommit as part of a more collaborative relationship with Capacity Management teams, applying values *to each ESXi host* that are often provided to them by those teams or other 3rd party capacity management systems.
-****
-endif::[]
-
-
 *Overcommit* occurs when the allocated virtual resources exceed the physical resources available on the host. Overcommit allows users to enable higher workload density by leveraging the fact that Virtual Machines (VMs) rarely use their full allocated capacity simultaneously.
 
 In this module, you will perform two overcommit tasks:
@@ -15,9 +7,8 @@ In this module, you will perform two overcommit tasks:
 * <<cpu,Understand and Overcommit CPU on a Virtual Machine>>
 * <<memory,Understand, Enable and Overcommit Memory on a Virtual Machine>>
 
-include::lab-access.adoc[]
 
-[#cpu]
+[[cpu]]
 == CPU Overcommit
 
 In OpenShift Virtualization, compute resources assigned to Virtual Machines (VMs) are backed by either *Guaranteed CPUs* or *time-sliced CPU shares*.
@@ -32,17 +23,12 @@ By default OpenShift Virtualization has a 10:1 overcommit ratio. To achieve CPU 
 
 The default _10:1_ overcommit ratio can be configured to the desired overcommit level by changing the *vmiCPUAllocationRatio* on the *hyperconverged* Custom Resource. Changing this ratio will influence the CPU requests for each vCPU that is allocated by default, which enforces the maximum level of CPU overcommit through Kubernetes based request scheduling.
 
-[NOTE]
-====
-Resource assignments are made at *virt-launcher* pod scheduling time, so any VMs will need to be live migrated stopped and restarted to change CPU allocation behavior after a ratio change.
-====
+NOTE: Resource assignments are made at *virt-launcher* pod scheduling time, so any VMs will need to be live migrated stopped and restarted to change CPU allocation behavior after a ratio change.
 
-[#cpuinstructions]
 === Instructions
 
-. Ensure you are <<labaccess,logged in to both the OpenShift Console and CLI as the *admin* user>> from your *web browser* and the *terminal* window on the right side of your screen and continue to the next step.
+. Ensure that you are logged into both the OpenShift console and the provided Terminal as the Admin account before proceeding with this lab module.
 
-+
 . To understand CPU overcommit, you must first identify how many physical CPU cores are available on your worker nodes.
 
 +
@@ -359,19 +345,14 @@ image::exercise2/pod-cpu-details.png[title="Confirm number of CPUs", link=self, 
 +
 IMPORTANT: **A VM with 32 vCPUs only requests `3200m` (0.1 * 32 = 3.2 CPU) by default!**
 
-[#memory]
+[[memory]]
 == Memory Overcommit
 
-Kubernetes, until 1.21, and OpenShift, until 4.21, did not have a Generally Available native SWAP implementation and thus did not allow use of SWAP.
+Prior to the release of OpenShift 4.21, based on Kubernetes 1.21, there was not a generally available native SWAP implementation in Kubernetes. In earlier releases OpenShift Virtualization worked around this lack of feature availability by utilizing the *wasp-agent* add-on. 
 
-Memory oversubscription without use of swap is hazardous because if the amount of memory required by processes running on a node exceeds the amount of RAM available, processes will be killed. That's not desirable, particularly for VMs where the workloads will be go offline if the VM is killed.
-
-OpenShift Virtualization ships the *wasp-agent* to permit the controlled use of swap with VMs.
 Refer to the https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/virtualization/postinstallation-configuration#virt-using-wasp-agent-to-configure-higher-vm-workload-density_virt-configuring-higher-vm-workload-density[wasp-agent component documentation] for more information.
 
-NOTE: We won't configure the *wasp-agent* in this lab due to time and resource constraints but you can read the documentation and install procedures on your own time.
-
-IMPORTANT: Starting with Kubernetes 1.21 and OpenShift 4.21 the *wasp-agent* will be superseded by the native Kubernetes SWAP implementation.
+Memory oversubscription without use of swap is hazardous because if the amount of memory required by processes running on a node exceeds the amount of RAM available, processes will be killed. That's not desirable, particularly for VMs where the workloads will be go offline if the VM is killed.
 
 The *memoryOvercommitPercentage* parameter on the *hyperconverged* Custom Resources tells OpenShift Virtualization how to scale the memory requests for each VM. When set to the default, 100, it calculates memory requests based on the full amount of memory declared by the VM. When it's set to a higher value, the request is set to a proportionally smaller value than the VM requested, allowing for memory overcommit.
 
@@ -398,15 +379,10 @@ or, with 150% overcommit
 ====
 Memory overhead per virtual machine ≈ (0.002 × requested memory) + 218 MiB + 8 MiB × (number of vCPUs) + 16 MiB × (number of graphics devices) + (additional memory overhead)
 
-See the section on https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/virtualization/installing#memory-overhead_preparing-cluster-for-virt[Virtual machine memory overhead] in the OpenShift Virtualization docs.
+See the section on https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/virtualization/installing#memory-overhead_preparing-cluster-for-virt[Virtual machine memory overhead] in the OpenShift Virtualization docs.
 ====
 
-[#memoryinstructions]
 === Instructions
-
-. Ensure you are <<labaccess,logged in to both the OpenShift Console and CLI as the *admin* user>> from your *web browser* and the *terminal* window on the right side of your screen and continue to the next step.
-
-+
 
 Using the *OpenShift Console*, navigate to *Virtualization → Virtual Machines*.
 
@@ -613,3 +589,7 @@ virtctl stop overcommit-vm-1 -n over-commit
 
 *VM overcommit-vm-1 was scheduled to stop*
 ====
+
+== Summary
+
+In this module we explored overcommitment options for both CPU and Memory in OpenShift in order to support higher density virtualization workloads, and to ensure that virtual machines are not treated like pods and killed by Kubernetes should a node run out of available physical resources.

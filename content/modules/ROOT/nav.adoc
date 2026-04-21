@@ -3,6 +3,12 @@
 ** xref:index.adoc#labaccess[Accessing the OpenShift Cluster]
 ** xref:index.adoc#bastionaccess[Accessing the Bastion]
 
+* xref:module-00.adoc[0. Virtual Machine Basics]
+** xref:module-00.adoc#create_project[Create a New Project]
+** xref:module-00.adoc#explore_virt[Exploring OpenShift Virtualization]
+** xref:module-00.adoc#create_vm[Create a Linux Virtual Machine]
+
+
 * xref:module-01.adoc[1. Live Migration of Workloads]
 ** xref:module-01.adoc#labaccess[Accessing the OpenShift Cluster]
 ** xref:module-01.adoc#computerand[Compute Migration to a random node]
