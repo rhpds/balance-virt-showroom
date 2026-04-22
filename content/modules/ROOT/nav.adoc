@@ -8,7 +8,7 @@
 ** xref:module-00.adoc#create_vm[Create a Linux Virtual Machine]
 ** xref:module-00.adoc#vm_state[Controlling Virtual Machine State]
 
-* xref:module-01.adoc[Live Migration of Workloads]
+* xref:module-01.adoc[Live Migration of Virtual Workloads]
 ** xref:module-01.adoc#compute_rand[Compute Migration to a Random Node]
 ** xref:module-01.adoc#compute_spec[Compute Migration to a specific node]
 ** xref:module-01.adoc#storage_mig[Storage Migration]
