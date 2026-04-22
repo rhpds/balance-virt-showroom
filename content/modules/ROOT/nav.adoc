@@ -10,13 +10,15 @@
 
 * xref:module-01.adoc[Live Migration of Virtual Workloads]
 ** xref:module-01.adoc#compute_rand[Compute Migration to a Random Node]
-** xref:module-01.adoc#compute_spec[Compute Migration to a specific node]
-** xref:module-01.adoc#storage_mig[Storage Migration]
+** xref:module-01.adoc#compute_spec[Compute Migration to a Specific Node]
+** xref:module-01.adoc#storage_mig[Storage Live Migration]
 
 * xref:module-02.adoc[Resource Management of Virtual Machines]
 ** xref:module-02.adoc#understanding_cpu[Understanding CPU Overcommit]
-** xref:module-02.adoc#configuring_cpu[Configuring CPU Overcommit]
-** xref:module-02.adoc#memory[Memory Overcommit]
+** xref:module-02.adoc#verifying_cpu[Verifying the CPU Overcommit Ratio]
+** xref:module-02.adoc#default_cpu_ratio[Understanding the Default CPU Ratio]
+** xref:module-02.adoc#understanding_memory[Understanding Memory Overcommit]
+** xref:module-02.adoc#verifying_memory[Verifying Memory Overcommit]
 
 * xref:module-03.adoc[Hot-Plugging Virtual Machine Resources]
 ** xref:module-03.adoc#cpu_mem[Adding CPU and Memory to a running VM]

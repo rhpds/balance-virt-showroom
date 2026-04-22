@@ -189,7 +189,7 @@ nproc
 +
 image::exercise2/overcommit-nproc.png[title="Confirm number of CPUs", link=self, window=blank, width=100%]
 
-To calculate the overcommit ratio on a specific node you must identify all of the VMs running on the node:
+. To calculate the overcommit ratio on a specific node you must identify all of the VMs running on the node:
 +
 [,shell,role="execute wrap",subs="attributes"]
 ----
@@ -203,7 +203,7 @@ NAME              AGE   PHASE     IP             NODENAME                       
 overcommit-vm-1   16m   Running   10.234.0.52   worker-cluster-bj7mh-1           True    True 
 ----
 
-In order to figure out our current overcommit ratio, we need to sum the CPUs for all of the VMs currently running on the node.
+. In order to figure out our current overcommit ratio, we need to sum the CPUs for all of the VMs currently running on the node.
 +
 [,shell,role="execute wrap",subs="attributes"]
 ----
@@ -263,7 +263,7 @@ NOTE: Recall that in OpenShift Virtualization, all virtual machines are actually
 +
 image::exercise2/vm-pod.png[title="VM Pod", link=self, window=blank, width=100%]
 
-When you click on the pod name, you load the *Pod details* page. Click on the *YAML* tab and scroll down to the *spec:containers:resources:requests:cpu* field.
+. When you click on the pod name, you load the *Pod details* page. Click on the *YAML* tab and scroll down to the *spec:containers:resources:requests:cpu* field.
 +
 image::exercise2/pod-cpu-details.png[title="Confirm number of CPUs", link=self, window=blank, width=100%]
 
@@ -303,7 +303,7 @@ or, with 150% overcommit
 ====
 Memory overhead per virtual machine ≈ (0.002 × requested memory) + 218 MiB + 8 MiB × (number of vCPUs) + 16 MiB × (number of graphics devices) + (additional memory overhead)
 
-Please see the section on https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/virtualization/installing#memory-overhead_preparing-cluster-for-virt[virtual machine memory overhead] in the OpenShift Virtualization docs.
+Please see the section on https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/virtualization/installing#memory-overhead_preparing-cluster-for-virt[virtual machine memory overhead^] in the OpenShift Virtualization docs.
 ====
 
 [[verifying_memory]]
@@ -409,6 +409,7 @@ oc patch hyperconverged -n openshift-cnv kubevirt-hyperconverged --type merge -p
 ----
 hyperconverged.hco.kubevirt.io/kubevirt-hyperconverged patched
 ----
+
 
 . Now run the following command to validate that the change was effective.
 [,shell,role="execute wrap",subs="attributes"]
