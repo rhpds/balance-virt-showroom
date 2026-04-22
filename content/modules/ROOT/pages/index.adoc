@@ -5,11 +5,14 @@ OpenShift Virtualization enables you to bring virtual machines onto a modern, Ku
 
 == What content is covered in this lab?
 
-* _OpenShift Virtualization Fundamentals_: In this section we will provide a review of virtual machine management fundamentals including: deployment, configuration, and live migration of resources.
-* _Resource Management of Virtual Machines_: In this section we will cover adapting our virtual machines and clusters to meet increased workload demands including overcommitting CPU and memory, along with the hot modification of virtual resources.
-* _Affinity and Dynamic Scheduling of Virtual Machines_: In this section we examine how we can control where virtual machines run for preferred performance and availability with considerations for workload balancing and the automatic placement of virtual machine by the OpenShift scheduler.
+* _OpenShift Virtualization Fundamentals_: In this section we will provide a review of virtual machine management fundamentals including: deployment, configuration, and state management of virtual machines.
+* _Live Migration of Workloads_: In this section we will demonstrate how virtual machines are able to live migrate between nodes as best determined by the Kubernetes scheduler, the end user, and show the live migration of virtual machines between storage classes.
+* _Resource Management of Virtual Machines_: In this section we will cover adapting our virtual machines and clusters to meet increased workload demands including overcommitting CPU and memory. 
+* _Hot-Plugging Virtual Machine Resources_: In this section we will walk through the process of adding additional resources to a running virtual machine. This will include CPU/Memory, an additonal virtual disk, and an additiona network adapter.
+* _Affinity and Anti-Affinity for Virtual Machines_: In this section we examine how we can control where virtual machines run for preferred performance and availability with considerations for workload balancing.
+* _Dynamic Scheduling of Virtual Workloads_: This section will cover how the OpenShift scheduler determines the placement of virtual machine resources, and how it balances workloads across the cluster.
 * _Fencing and Node Failure Remediation Scenarios_ In this section we show to to ensure workload resilience during potential infrastructure disruptions.
-* _Multicluster Management of Virtual Machines_ In this section we examine a multi-cluster environment for virtual machines, and how to live migrate workloads between disparate clusters.
+* _Cross-Cluster Live Migration and Multicluster Scenarios_ In this section we examine a newer feature that allows for the live migration of virtual machienes across cluster, and close with an interactive demo of how this can work in true hybrid cloud environment allowing you live migrate workloads between disparate clusters from a central point of management.
 
 [[labenvironment]]
 == Lab Environment
@@ -20,10 +23,9 @@ The following products and product versions are what constitute this lab environ
 
 * Red Hat OpenShift 4.21.9
 * Red Hat OpenShift Virtualization 4.21.3
-* Red Hat OpenShift Data Foundations 4.21.2
-* Red Hat Advanced Cluster Management for Kubernetes 2.16
-* Node Health Check Operator
-* Self Node Remediation Operator
+* Red Hat OpenShift Data Foundation 4.21.2
+* Node Health Check Operator 0.11.0
+* Self Node Remediation Operator 0.12.1
 * Kube Descheduler Operator 5.3.2
 * Migration Toolkit for Virtualization 2.11.3
 

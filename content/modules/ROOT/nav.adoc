@@ -2,7 +2,7 @@
 ** xref:index.adoc#labenvironment[Lab Environment]
 ** xref:index.adoc#labaccess[Accessing the OpenShift Cluster]
 
-* xref:module-00.adoc[Virtual Machine Basics with OpenShift Virtualization]
+* xref:module-00.adoc[OpenShift Virtualization Fundamentals]
 ** xref:module-00.adoc#create_project[Create a New Project]
 ** xref:module-00.adoc#explore_virt[Exploring OpenShift Virtualization]
 ** xref:module-00.adoc#create_vm[Create a Linux Virtual Machine]
@@ -13,16 +13,16 @@
 ** xref:module-01.adoc#compute_spec[Compute Migration to a specific node]
 ** xref:module-01.adoc#storage_mig[Storage Migration]
 
-* xref:module-02.adoc[CPU and Memory Overcommit]
+* xref:module-02.adoc[Resource Management of Virtual Machines]
 ** xref:module-02.adoc#cpu[CPU Overcommit]
 ** xref:module-02.adoc#memory[Memory Overcommit]
 
-* xref:module-03.adoc[Hot Plugging Resources]
+* xref:module-03.adoc[Hot-Plugging Virtual Machine Resources]
 ** xref:module-03.adoc#cpu_mem[Adding CPU and Memory to a running VM]
-** xref:module-03.adoc#disk[Adding a virtual disk to a running VM]
-** xref:module-03.adoc#nic[Adding a NIC to a running VM]
+** xref:module-03.adoc#disk[Adding a Virtual Disk to a Running VM]
+** xref:module-03.adoc#nic[Adding an Additional NIC to a Running VM]
 
-* xref:module-04.adoc[Affinity and Anti-Affinity for VM Placement]
+* xref:module-04.adoc[Affinity and Anti-Affinity for Virtual Machines]
 ** xref:module-04.adoc#node_affinity[Node Affinity]
 ** xref:module-04.adoc#pod_affinity[Pod Affinity]
 ** xref:module-04.adoc#pod_antiaffinity[Pod Anti-Affinity]
@@ -32,14 +32,16 @@
 ** xref:module-05.adoc#dynamic_resch_req[Requirements]
 ** xref:module-05.adoc#dynamic_resch_instructions[Instructions]
 
-* xref:module-06.adoc[Fencing and How to Handle Node Failure]
+* xref:module-06.adoc[Fencing and Node Failure Remediation Scenarios]
 ** xref:module-06.adoc#fencing_instructions[Instructions]
 
-* xref:module-07.adoc[Cross Cluster Live Migration]
+* xref:module-07.adoc[Cross Cluster Live Migration and Multicluster Scenarios]
 ** xref:module-07.adoc#how_cclm[How Does It work?]
 ** xref:module-07.adoc#requirements[Requirements]
 ** xref:module-07.adoc#decmlinstructions[CLI Based Instructions]
 ** xref:module-07.adoc#decmlmonitor[Monitor the Migration]
 ** xref:module-07.adoc#decmluiinstructions[UI Based Instructions]
+** xref:module-07.adoc#cclm_arcade[Interactive Demo of Cross-Cluster Live Migration]
+
 
 * xref:conclusion.adoc[Conclusion]

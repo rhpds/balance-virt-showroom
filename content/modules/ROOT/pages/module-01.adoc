@@ -1,12 +1,39 @@
 = Live Migration of Workloads
 
-Migrating workloads between compute nodes and storage types is a crucial feature of any modern hypervisor. OpenShift Virtualization allows the simple and easy process of migrating your virtual machine compute and storage from one place to another.
+Live migration of workloads between compute nodes and storage types is a crucial feature expected of any modern hypervisor. OpenShift Virtualization allows for the simple and easy process of migrating your virtual machine workloads between nodes and storageclasses in the cluster as determined by either the Kubernetes scheduler, or you the end user. 
 
-In this module, you will perform three migration tasks:
+In a container-based application there are often multiple replicas of a container spread across the cluster ensuring availability, and should a hosting node run out of resources, a container is simply killed and redeployed elsewhere in the cluster. The same does not apply to virtual machines which are stateful workloads with persistent storage. Thus virtual workloads may need to be live migrated for reasons related to physical resource limitations, planned maintenance, or to enhance performance of particular workload. 
+
+
+.*Goals*
 
 * Live migration of a virtual machine from one node to another random node.
 * Live migration of a virtual machine from one node to another specific node.
 * Live migration of virtual machine storage from one StorageClass to another.
+
+[[labaccess]]
+== Accessing the OpenShift Cluster
+
+*Web Console*
+{openshift_cluster_console_url}[{openshift_cluster_console_url},window=_blank]
+
+*OpenShift Username*
+[.wrap,console,role=execute,subs="attributes"]
+----
+{openshift_cluster_admin_username}
+----
+
+*OpenShift Password*
+[.wrap,console,role=execute,subs="attributes"]
+----
+{openshift_cluster_admin_password}
+----
+
+*CLI Login*
+[.wrap,console,role=execute,subs="attributes"]
+----
+oc login -u {openshift_cluster_admin_username} -p {openshift_cluster_admin_password} --server={openshift_api_server_url}
+----
 
 
 [[compute_rand]]
