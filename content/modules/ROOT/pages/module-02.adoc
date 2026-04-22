@@ -24,7 +24,7 @@ Your console login is available with:
 
 You can login to your OpenShift cluster on the provided terminal by copying and pasting the following syntax:
 
-[source,sh,role=execute]
+[source,sh,role=execute,subs="attributes"]
 ----
 oc login -u {openshift_cluster_admin_username} -p {openshift_cluster_admin_password} --server={openshift_api_server_url}
 ----
