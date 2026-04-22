@@ -27,6 +27,25 @@ These requirements have already been enabled on your cluster and are noted for y
 * The *Migration Toolkit for Virtualization (MTV)* Operator must be installed with the feature *feature_ocp_live_migration* set to *true* when creating the *ForkliftController* CR
 * You must enable the *DecentralizedLiveMigration* *featureGate* on the *hyperconverged* Custom Resource
 
+[[labaccess]]
+== Accessing the OpenShift Cluster
+
+Your OpenShift cluster console is available {openshift_cluster_console_url}[here^].
+
+Your console login is available with:
+
+* *User:* {openshift_cluster_admin_username}
+
+* *Password:* {openshift_cluster_admin_password}
+
+
+You can login to your OpenShift cluster on the provided terminal by copying and pasting the following syntax:
+
+[source,sh,role=execute]
+----
+oc login -u {openshift_cluster_admin_username} -p {openshift_cluster_admin_password} --server={openshift_api_server_url}
+----
+
 
 [[instructions]]
 == CLI Based Instructions

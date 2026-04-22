@@ -1,10 +1,32 @@
 = Hot Plugging Resources
 
-In this module, you will perform three tasks:
 
-* <<cpu,Increase the CPU and Memory of a running VM>>
-* <<disk,Add a virtual disk to a running VM and then make it persistent>>
-* <<nic,Add a network interface (NIC) to a virtual machine>>
+
+. *Goals*
+
+* Increase the CPU and Memory of a running virtual machine.
+* Add a hotplug virtual disk to a running virtual machine.
+* Add a hotplug network interface (NIC) to a running virtual machine.
+
+
+[[labaccess]]
+== Accessing the OpenShift Cluster
+
+Your OpenShift cluster console is available {openshift_cluster_console_url}[here^].
+
+Your console login is available with:
+
+* *User:* {openshift_cluster_admin_username}
+
+* *Password:* {openshift_cluster_admin_password}
+
+
+You can login to your OpenShift cluster on the provided terminal by copying and pasting the following syntax:
+
+[source,sh,role=execute]
+----
+oc login -u {openshift_cluster_admin_username} -p {openshift_cluster_admin_password} --server={openshift_api_server_url}
+----
 
 
 [[cpu_mem]]

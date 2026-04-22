@@ -1,6 +1,5 @@
 = Dynamic Rescheduling of Workloads
 
-[[dynamice_resch_intro]]
 == Introduction
 
 You can use the descheduler to evict pods based on specific strategies so that the pods can be rescheduled onto more appropriate nodes.  But eviction is a stop and start and no one wants their VMs restarted to achieve this.
@@ -39,7 +38,25 @@ For your convenience, all of the requirements are already enabled in the lab.
 
 NOTE: PSI (Pressure Stall Information) is a Linux kernel feature that measures and reports the time tasks spend waiting for CPU, memory, or I/O resources, providing visibility into resource contention and saturation. It quantifies how much time processes are stalled waiting for resources, helping identify performance bottlenecks by showing what percentage of time your system is under pressure from insufficient resources.
 
-include::lab-access.adoc[]
+[[labaccess]]
+== Accessing the OpenShift Cluster
+
+Your OpenShift cluster console is available {openshift_cluster_console_url}[here^].
+
+Your console login is available with:
+
+* *User:* {openshift_cluster_admin_username}
+
+* *Password:* {openshift_cluster_admin_password}
+
+
+You can login to your OpenShift cluster on the provided terminal by copying and pasting the following syntax:
+
+[source,sh,role=execute]
+----
+oc login -u {openshift_cluster_admin_username} -p {openshift_cluster_admin_password} --server={openshift_api_server_url}
+----
+
 
 [[dynamic_resch_instructions]]
 == Instructions

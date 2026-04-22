@@ -33,23 +33,18 @@ The following products and product versions are what constitute this lab environ
 [[labaccess]]
 == Accessing the OpenShift Cluster
 
-*Web Console*
-{openshift_cluster_console_url}[{openshift_cluster_console_url},window=_blank]
+Your OpenShift cluster console is available {openshift_cluster_console_url}[here^].
 
-*OpenShift Username*
-[.wrap,console,role=execute,subs="attributes"]
-----
-{openshift_cluster_admin_username}
-----
+Your console login is available with:
 
-*OpenShift Password*
-[.wrap,console,role=execute,subs="attributes"]
-----
-{openshift_cluster_admin_password}
-----
+* *User:* {openshift_cluster_admin_username}
 
-*CLI Login*
-[.wrap,console,role=execute,subs="attributes"]
+* *Password:* {openshift_cluster_admin_password}
+
+
+You can login to your OpenShift cluster on the provided terminal by copying and pasting the following syntax:
+
+[source,sh,role=execute]
 ----
 oc login -u {openshift_cluster_admin_username} -p {openshift_cluster_admin_password} --server={openshift_api_server_url}
 ----

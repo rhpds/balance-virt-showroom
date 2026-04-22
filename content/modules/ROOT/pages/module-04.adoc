@@ -2,6 +2,29 @@
 
 Affinity and Anti-affinity are a set of rules that allow us to select where a virtual machine can be placed by the Kubernetes scheduler when it is deployed. In many cases these rules are defined to ensure that two interdependant workloads are not placed on the same node through anti-affinity rules. Think of an application that may have two frontend web servers and a backend databaseserver with traffic load balanced evenly to the web servers. You would not want both of those VMs placed on the same node. Should an issue happen with the host system, the entire virtual application would be affected. By setting both affinity and anti-affinity rules for the placement of VMs, we can ensure situations like this don't happen. 
 
+. *Goals*
+
+* Understand configurations behind virtual machine placement for Affinity and Anti-affinity.
+
+[[labaccess]]
+== Accessing the OpenShift Cluster
+
+Your OpenShift cluster console is available {openshift_cluster_console_url}[here^].
+
+Your console login is available with:
+
+* *User:* {openshift_cluster_admin_username}
+
+* *Password:* {openshift_cluster_admin_password}
+
+
+You can login to your OpenShift cluster on the provided terminal by copying and pasting the following syntax:
+
+[source,sh,role=execute]
+----
+oc login -u {openshift_cluster_admin_username} -p {openshift_cluster_admin_password} --server={openshift_api_server_url}
+----
+
 
 [[node_affinity]]
 == Node Affinity

@@ -4,8 +4,30 @@
 
 In this module, you will perform two overcommit tasks:
 
-* <<cpu,Understand and Overcommit CPU on a Virtual Machine>>
-* <<memory,Understand, Enable and Overcommit Memory on a Virtual Machine>>
+.*Goals*
+
+* Understand and Overcommit CPU on a Virtual Machine
+* Understand, Enable, and Overcommit Memory on a Virtual Machine
+
+
+[[labaccess]]
+== Accessing the OpenShift Cluster
+
+Your OpenShift cluster console is available {openshift_cluster_console_url}[here^].
+
+Your console login is available with:
+
+* *User:* {openshift_cluster_admin_username}
+
+* *Password:* {openshift_cluster_admin_password}
+
+
+You can login to your OpenShift cluster on the provided terminal by copying and pasting the following syntax:
+
+[source,sh,role=execute]
+----
+oc login -u {openshift_cluster_admin_username} -p {openshift_cluster_admin_password} --server={openshift_api_server_url}
+----
 
 
 [[cpu]]
