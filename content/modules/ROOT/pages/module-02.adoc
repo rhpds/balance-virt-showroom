@@ -1,4 +1,4 @@
-= Overcommit in OpenShift Virtualization
+= Resource Management of Virtual Machines
 
 *Overcommit* occurs when the allocated virtual resources exceed the physical resources available on the host. Overcommit allows users to enable higher workload density by leveraging the fact that Virtual Machines (VMs) rarely use their full allocated capacity simultaneously.
 
@@ -397,7 +397,7 @@ NOTE: This is less than the _2048MiB_ utilized by the VM, and is basically 1/2 o
 
 . We can also increase the memory overcommit ratio by patching the *hyperconverged* custom resource on the command line.
 
-. Using the embedded terminal, use the following command to set the overcommit ratio to 300%:
+. Using the embedded terminal, use the following command to set the overcommit ratio to 400%:
 +
 [,shell,role="execute wrap",subs="attributes"]
 ----
@@ -412,6 +412,7 @@ hyperconverged.hco.kubevirt.io/kubevirt-hyperconverged patched
 
 
 . Now run the following command to validate that the change was effective.
++
 [,shell,role="execute wrap",subs="attributes"]
 ----
 oc get hyperconverged -n openshift-cnv kubevirt-hyperconverged -o json | jq '.spec.higherWorkloadDensity.memoryOvercommitPercentage'
@@ -425,7 +426,7 @@ oc get hyperconverged -n openshift-cnv kubevirt-hyperconverged -o json | jq '.sp
 +
 NOTE: This means that the memory overcommit ratio is now _400%_ which is _4:1_.
 
-. Since we are here you can restart the VM and observe the memory request on the *virt-launcher* pod compared to the 2GiB allocated to the VM. Restart the VM with the following command:
+. Since we are already using the terminal, you can restart the VM and observe the memory request on the *virt-launcher* pod compared to the 2GiB allocated to the VM without having to change back to the OpenShift console. Restart the VM with the following command:
 +
 [,shell,role="execute wrap",subs="attributes"]
 ----
