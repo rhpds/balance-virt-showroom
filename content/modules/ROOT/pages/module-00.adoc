@@ -26,19 +26,28 @@ Your login is available with:
 +
 image::exercise0/00_Welcome_Message.png[link=self, window=blank, width=100%]
 
+. You will find yourself on the *Overview* page of the cluster. To get started working with virtual machines, you need to create a project to do that in.
+. In the left side menu click on *Home -> Projects*.
 . You will be presented with a page that shows all of the projects that your user currently has access to. On this page we will create a new project that will work as our working area for the remainder of this workshop. Click on the *Create Project* button in the upper right corner.
 +
 image::exercise0/01_Create_Project.png[link=self, window=blank, width=100%]
 
-. A box will pop up which will give you the opportunity to name this new project, name the project *vmexamples-{user}* and click the *Create* button.
+. A box will pop up which will give you the opportunity to name this new project, name the project *virtual-machines* and click the *Create* button.
 +
 image::exercise0/02_Create_Project_Name.png[link=self, window=blank, width=100%]
-+
 
 [[explore_virt]]
 == Exploring OpenShift Virtualization
 
-When you arrive in the *Virtualization* view you will be on the *Overview* page which provides a high-level view of all virtualization resources currently in use, lets take a moment to explore.
+Now it's time to get started with OpenShift Virtualization, in the left side menu click on *Core Platform* and select *Virtualization* from the dropdown menu. This will take you to the Virtualization centric view in OpenShift Virtualization.
+
+image::exercise0/03_Switch_Virt_View.png[link=self, window=blank, width=100%]
+
+When you first arrive in this view, you will recieve a prompt welcoming you to OpenShift Virtualization. Click the box that says *Do not show this again.*
+
+image::exercise0/04_Virt_Welcome.png[link=self, window=blank, width=100%]
+
+You will be taken to the Overview page for OpenShift Virtualization where you can observe a high-level view of all virtualization resources currently in use, lets take a moment to explore.
 
 image::exercise0/05_Virt_Overview.png[link=self, window=blank, width=100%]
 
@@ -54,19 +63,21 @@ image::exercise0/06_Tree_View.png[link=self, window=blank, width=100%]
 +
 image::exercise0/07_Left_Menu.png[link=self, window=blank, width=100%]
 
-. The central column as mentioned is a project view. Like other objects in OpenShift, Projects (which are an abstraction for Kubernetes namespaces), are the boundaries for which permissions and other aspects of using and managing the resources are available to a user. By default there is a slider here that only shows projects with existing VMs. Currently the only project that we can see listed is *vmimported-{user}*, as it is the only project that we have access to with virtual machines in it.
+. The central column as mentioned is a project view. Like other objects in OpenShift, Projects (which are an abstraction for Kubernetes namespaces), are the boundaries for which permissions and other aspects of using and managing the resources are available to a user. By default there is a slider here that only shows projects with existing VMs. Currently we see a number of projects with virtual machines that have been staged for the various modules in this lab. 
++
+NOTE: Notice that your newly created *virtual-machines* project does not appear as there are no virtual machines in it. You can flip the toggle to make it and all other projects in the cluster appear if you'd like.
 +
 image::exercise0/08_Project_Tree.png[link=self, window=blank, width=100%]
 
-. In the virtual machine overview column, it will list play us in the Project *mtv-{user}* by default, as it's sorted alphabetically. This project doesn't cureently have any virtual machines in it, nor will it in the future. This view will change when you highlight a specific project or virtual machine in the center column. Lets try that now.
+. In the virtual machine overview column, it will list all of the VMs in the cluster by as we are viewing All Projects by default. If you highlight a specific project or virtual machine in the center column this screen will change. Lets try that now.
 +
 image::exercise0/09_VM_List.png[link=self, window=blank, width=100%]
 
-. In the center project view column click on the project *vmimported-{user}* to see the virtual machines that are currently deployed and available to your specific user account.
+. In the center project view column click on the project *affinity* to see the virtual machines that are currently deployed there.
 +
-image::exercise0/10_VM_Imported_Project.png[link=self, window=blank, width=100%]
+image::exercise0/10_Affinity_Project.png[link=self, window=blank, width=100%]
 
-. The *vmimported-{user}* project will expand listing the three virtual machines that reside there, and the virtual machine overview column will update to show the virtual machines in the *vmimported-{user}* project. You should see three VMs listed, but they are not currently turned on, these are for a later part of the lab that we can use if necessary.
+. The *Affinity* project will expand listing the three virtual machines that reside there, and the virtual machine overview column will update to show only the virtual machines in the project. You should see three VMs listed, they may or may not currently be powered on, these are for use in a later module of this lab.
 +
 image::exercise0/11_VMs_Stopped.png[link=self, window=blank, width=100%]
 
@@ -75,9 +86,9 @@ image::exercise0/11_VMs_Stopped.png[link=self, window=blank, width=100%]
 
 . To create a virtual machine, we must select the project we would like to create it in. 
 
-. In the the center project view, click the toggle button to turn off the option for *Show only projects with VirtualMachines*. This way you can see all of the projects that your user has access to, including the *vmexamples-{user}* project that we created earlier.
+. In the the center project view, click the toggle button to turn off the option for *Show only projects with VirtualMachines*. This way you can see all of the projects that your user has access to, including the *virtual-machines* project that we created earlier.
 
-. Click on your *vmexamples-{user}* project and you will see that the virtual machine overview column updates and now has a *Create VirtualMachine* button.
+. Click on your *virtual-machines* project and you will see that the virtual machine overview column updates and now has a *Create VirtualMachine* button.
 
 . Click on the *Create VirtualMachine* button and select *From template* from the drop-down menu.
 +
@@ -87,7 +98,7 @@ NOTE: VMs can also be created from an InstanceType wizard as well as created by 
 
 . You will be taken to the *Catalog* screen, where a number of tiles will appear showing the available pre-defined VM templates.
 +
-Reviewing the list of available templates you’ll notice that some have a blue badge which indicates _Source available_. These are templates which are using automatically downloaded and stored template source disks. 
+Reviewing the list of available templates you’ll notice that some have a blue badge which indicates _Source available_. These are templates which are using automatically downloaded and stored template source disks provided by Red Hat. 
 +
 If you were deploying in your own environment where you can customize the options available, you can choose to modify the availability of these boot sources by default, and/or remove these source disks, in favor of creating custom disks for your organization's needs.
 +
@@ -97,11 +108,11 @@ image::exercise0/13_Create_VM_Templates.png[link=self, window=blank, width=100%]
 +
 image::exercise0/14_Create_VM_Quick.png[link=self, window=blank, width=100%]
 
-. Change the name to *fedora01* and press *Quick create VirtualMachine*.
+. Change the name to *my-vm* and press *Quick create VirtualMachine*.
 +
 image::exercise0/15_Create_VM_Quick_Name.png[link=self, window=blank, width=100%]
 
-. We will return to our tree view and see information about our new VM in the virtual machine overview column. Notice also that we now see our *vmexamples-{user}* project listed in the center column as it contains a VM, and that it is highlighted within the project.
+. We will return to our tree view and see information about our new VM in the virtual machine overview column.
 +
 If we watch closely we can see the VM Status switch from *Provisioning* to *Starting* and finally *Running* in the virtual machine overview column when it is ready. 
 +
@@ -125,16 +136,14 @@ image::exercise0/17_Fedora_Details.png[link=self, window=blank, width=100%]
 image::exercise0/18_Fedora_Events.png[link=self, window=blank, width=100%]
 +
 * A _DataVolume_ was created. _DataVolumes_ are used to manage the creation of a VM disk, abstracting the clone or import process onto OpenShift native storage during the virtual machine's creation workflow.
-* The new  _VM instance_ *fedora01* has been started.
+* The new  _VM instance_ *my-vm* has been started.
 
 [[admin_vms]]
 == Administering Virtual Machines
 
-Administering and using virtual machines is more than simply creating and customizing their configuration. As the platform administrator, we need to be able to control the states of the virtual machine, and perform advanced operations such as live migrations between worker nodes so that we can balance resources, perform maintenance tasks, and reconfigure nodes.
+Administering and using virtual machines is more than simply creating and customizing their configuration. As the platform administrator, we need to be able to control the states of the virtual machine, and perform advanced operations such as live migrations between worker nodes so that we can balance resources, perform maintenance tasks, and reconfigure nodes. We will cover many of these scenarios later in this lab.
 
 . Click the *Configuration* tab, this is the entry point to obtain more information about, and modify the resources of the virtual machine.
-+
-image::exercise0/19_VM_Configuration.png[link=self, window=blank, width=100%]
 +
 It includes seven subtabs:
 +
@@ -148,7 +157,7 @@ image::exercise0/20_Configuration_Tab.png[link=self, window=blank, width=100%]
 * *Initial run*: This tab allows us to configure _cloud-init_ for Linux or _sys-prep_ for Microsoft Windows, including setting the commands to be executed on the first boot, such as the injection of SSH keys, installation of applications, network configuration, and more.
 * *Metadata*: This tab shows current Labels and Annotations applied to the virtual machine. Modifying these values can help us tag our machines for specific purposes, or help us enable automated workflows by uniquely identifying machines.
 
-. You can click on each of these to explore at your leisure, but for introductory purposes, lets focus on storage and networking specifically.
+. You can click on each of these to explore at your leisure, but for introductory purposes, lets focus on storage and networking specifically as we will work with them later in this lab.
 
 . List the disks associated with the VM by clicking on the *Storage* tab:
 +
@@ -162,7 +171,7 @@ image::exercise0/22_Network_Tab.png[link=self, window=blank, width=100%]
 +
 When a VM is quick created, an interface on the *Pod Networking* network of type *masquerade* is created by default. This connects the VM to the SDN and provides egress from the VM to the world outside the OpenShift cluster. Other VMs, and Pods within the cluster, can access the virtual machine using this interface.
 +
-Furthermore, a VM connected to the SDN can be accessed externally using a Route, or Service with type load balancer, or even have a Network Attachment Definition or User-defined Network (UDN) define a VLAN or external network to directly attach it to. These options will be explored in depth a bit later.
+Furthermore, a VM connected to the SDN can be accessed externally using a Route, or Service with type load balancer, or even have a Network Attachment Definition or User-defined Network (UDN) define a VLAN or external network to directly attach it to
 
 [[vm_state]]
 == Controlling Virtual Machine State
@@ -198,8 +207,8 @@ image::exercise0/26_VM_Actions_List_Stopped.png[link=self, window=blank, width=1
 +
 image::exercise0/27_VM_Actions_Paused.png[link=self, window=blank, width=100%]
 
-. Have the Virtual Machine resume operations by using the *Actions -> Control*  menu and the option *Unpause*, or by using the shortcut button.
+. Have the Virtual Machine resume operations by using the *Actions -> Control*  menu and the option *Unpause*, or by using the shortcut button for the *Unpause* action.
 
 == Summary
 
-In this lab, we did an overview of the Virtualization management environment in OpenShift Virtualization, provisioned a virtual machine from a provided template, and performed some basic virtual machine state controls. These basic tasks get you started with OpenShift Virtualization, each module that follows helps to expand on this and takes you Beyond the Basics.
+In this lab, we did an overview of the Virtualization management environment in OpenShift Virtualization, provisioned a virtual machine from a provided template, and performed some basic virtual machine state controls. These basic tasks get you started with OpenShift Virtualization, each module that follows is designed to expand on these fundamental features, and to take you Beyond the Basics.
