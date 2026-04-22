@@ -67,7 +67,7 @@ image::exercise1/01-vm-start-001.png[title="Start the Virtual Machine", link=sel
 +
 image::exercise1/01-vm-start-002.png[title="Running Virtual Machine", link=self, window=blank, width=100%]
 
-To see the node the Virtual Machine is currently running on, look at the *General* box on the right hand side of the *VirtualMachine details* page for the *Node* name. In the following screenshot, the node is *worker-cluster-bj7mh-1*.
+.To see the node the Virtual Machine is currently running on, look at the *General* box on the right hand side of the *VirtualMachine details* page for the *Node* name. In the following screenshot, the node is *worker-cluster-bj7mh-1*.
 +
 image::exercise1/01-image-compute-002.png[title="Virtual machine details", link=self, window=blank, width=100%]
 
@@ -135,8 +135,7 @@ NOTE: You may need to click on a browser pop-up to allow this action to take pla
 
 . Now lets run a command that will run continuously through the migration process, to demonstrate that the VM does not go offline perhaps the `ping` command to a publicly available website like www.google.com. You can use the provided toolbox below to copy the command, and paste it using the *Paste to console* button as in the previous step.
 +
-*Ping command*
-[.wrap,console,role=execute,subs="attributes"]
+[source,sh,role=execute]
 ----
 ping www.google.com
 ----
@@ -173,7 +172,7 @@ image::exercise1/01-image-storage-009.png[title="Migration is running", link=sel
 +
 image::exercise1/01-image-storage-109.png[title="Migration is complete", link=self, window=blank, width=100%]
 
-Using the left side navigation menu select the *live-migrate* namespace and click on the Virtual Machine named *live-migrate-vm1*.
+. Using the left side navigation menu select the *live-migrate* namespace and click on the Virtual Machine named *live-migrate-vm1*.
 +
 image::exercise1/01-image-storage-209.png[title="Select live-migrate-vm1", link=self, window=blank, width=100%]
 +
