@@ -220,6 +220,11 @@ image::exercise0/27_VM_Actions_Paused.png[title="The VM is Paused", link=self, w
 
 . Have the Virtual Machine resume operations by using the *Actions -> Control*  menu and the option *Unpause*, or by using the shortcut button for the *Unpause* action.
 
+Congratulations, you have completed this module!
+
+IMPORTANT: Prior to moving on to the next section, please shut down the *my-vm* virtual machine using the *Stop* button or the *Actions* menu in order to conserve lab resources.
+
+
 == Summary
 
 In this lab, we did an overview of the Virtualization management environment in OpenShift Virtualization, provisioned a virtual machine from a provided template, and performed some basic virtual machine state controls. These basic tasks get you started with OpenShift Virtualization, each module that follows is designed to expand on these fundamental features, and to take you *Beyond the Basics*.

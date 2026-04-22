@@ -14,7 +14,8 @@
 ** xref:module-01.adoc#storage_mig[Storage Migration]
 
 * xref:module-02.adoc[Resource Management of Virtual Machines]
-** xref:module-02.adoc#cpu[CPU Overcommit]
+** xref:module-02.adoc#understanding_cpu[Understanding CPU Overcommit]
+** xref:module-02.adoc#configuring_cpu[Configuring CPU Overcommit]
 ** xref:module-02.adoc#memory[Memory Overcommit]
 
 * xref:module-03.adoc[Hot-Plugging Virtual Machine Resources]
