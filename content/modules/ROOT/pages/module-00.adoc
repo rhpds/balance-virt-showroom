@@ -69,7 +69,7 @@ NOTE: Notice that your newly created *virtual-machines* project does not appear 
 +
 image::exercise0/08_Project_Tree.png[link=self, window=blank, width=100%]
 
-. In the virtual machine overview column, it will list all of the VMs in the cluster by as we are viewing All Projects by default. If you highlight a specific project or virtual machine in the center column this screen will change. Lets try that now.
+. In the virtual machine overview column, it will list all of the VMs in the cluster by as we are viewing *All Projects* by default. If you highlight a specific project or virtual machine in the center column this screen will change. Lets try that now.
 +
 image::exercise0/09_VM_List.png[link=self, window=blank, width=100%]
 
@@ -79,7 +79,7 @@ image::exercise0/10_Affinity_Project.png[link=self, window=blank, width=100%]
 
 . The *Affinity* project will expand listing the three virtual machines that reside there, and the virtual machine overview column will update to show only the virtual machines in the project. You should see three VMs listed, they may or may not currently be powered on, these are for use in a later module of this lab.
 +
-image::exercise0/11_VMs_Stopped.png[link=self, window=blank, width=100%]
+image::exercise0/11_VMs_Affinity.png[link=self, window=blank, width=100%]
 
 [[create_vm]]
 == Create a Linux Virtual Machine
@@ -203,7 +203,7 @@ image::exercise0/26_VM_Actions_List_Stopped.png[link=self, window=blank, width=1
 
 . Click *Start*, and wait for the *Running* status.
 
-. Using the *Actions* menu, or the shortcut button, press the *Pause* option. The Virtual Machine state will change to *Paused*.
+. Using the *Actions* menu, or the shortcut button, press the *Pause* option. The Virtual Machine state will change to *Paused* which is useful if you need to immediately free up resources on a hypervisor host, but don't want to lose the state of applications running on your VM.
 +
 image::exercise0/27_VM_Actions_Paused.png[link=self, window=blank, width=100%]
 
@@ -211,4 +211,4 @@ image::exercise0/27_VM_Actions_Paused.png[link=self, window=blank, width=100%]
 
 == Summary
 
-In this lab, we did an overview of the Virtualization management environment in OpenShift Virtualization, provisioned a virtual machine from a provided template, and performed some basic virtual machine state controls. These basic tasks get you started with OpenShift Virtualization, each module that follows is designed to expand on these fundamental features, and to take you Beyond the Basics.
+In this lab, we did an overview of the Virtualization management environment in OpenShift Virtualization, provisioned a virtual machine from a provided template, and performed some basic virtual machine state controls. These basic tasks get you started with OpenShift Virtualization, each module that follows is designed to expand on these fundamental features, and to take you *Beyond the Basics*.
