@@ -25,7 +25,7 @@ In this lab, you will be performing a live migration of Virtual Machine from one
 
 * Ports *49152 and 49153* must be available in the VM's virt-launcher pod; live migration fails if these ports are specified in a masquerade network interface.
 
-* CPU model must match on the source and destination node - you can not live migrate from Intel to AMD
+* CPU model must match on the source and destination compute node - you can not live migrate virtual guests from Intel to AMD, ARM, or PowerPC processor types, even though they are all supported by OpenShift Virtualization and mixed clusters can exist. 
 
 === Instructions
 
