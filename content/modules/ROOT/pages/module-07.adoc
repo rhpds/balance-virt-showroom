@@ -688,11 +688,17 @@ image::exercise7/ui/image12-plan-created-error.png[title="Plan Details", link=se
 [[cclm_arcade]]
 == Interactive Demo of Cross-Cluster Live Migration
 
+While we were unable to demostrate for you a true cross-cluster live migration due to the limitations of this lab, we would like to invite you to take a few moments to click through this interactive demo. The embedded Arcade demo steps you through a cross-cluster live migration between two remote OpenShift Virtualization clusters managed by a centralized deployment of Red Hat Cluster Management for Kubernetes. The *Fleet Management* functionality added recently to RHACM 2.16 allows for the easy management of virtual machine workloads across all of your clusters, wherever they are located.
 
+Please enjoy the demonstration:
 
+++++
+<!--ARCADE EMBED START--><div style="position: relative; padding-bottom: calc(52.9167% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/kCWUcu3QY39Hfa1lNpRu?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Whats New in OpenShift 4.21: Cross-cluster Live Migration" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div><!--ARCADE EMBED END-->
+++++
 
+Congratulations, you have completed this module!
 
 == Summary
 
-In this module we explored decentrailized live migration within a cluster, across namespaces. This is the basic technology that allows us to live migrate workloads between remote clusters, and helps set us up for the future of a true hybrid multicloud environment.
+In this module we explored decentralized live migration within a cluster, across namespaces. This is the basic technology that allows us to live migrate workloads between remote clusters, and helps set us up for the future of a true hybrid multicloud environment.
 

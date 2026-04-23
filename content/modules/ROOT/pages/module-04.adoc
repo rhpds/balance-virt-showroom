@@ -1,4 +1,6 @@
-= Affinity and Anti-Affinity for VM Placement
+= Affinity and Anti-Affinity for Virtual Machines
+
+== Introduction
 
 Affinity and Anti-affinity are a set of rules that allow us to select where a virtual machine can be placed by the Kubernetes scheduler when it is deployed. In many cases these rules are defined to ensure that two interdependant workloads are not placed on the same node through anti-affinity rules. Think of an application that may have two frontend web servers and a backend databaseserver with traffic load balanced evenly to the web servers. You would not want both of those VMs placed on the same node. Should an issue happen with the host system, the entire virtual application would be affected. By setting both affinity and anti-affinity rules for the placement of VMs, we can ensure situations like this don't happen. 
 
@@ -108,7 +110,7 @@ The primary benefit of using pod affinity is to improve performance for dependen
 
 This section of the lab will demonstrate the setup and usage of Pod Affinity.
 
-Note: This section of the lab will use the embedded terminal and a number of CLI commands to perform advanced operations on virtual machine pods and worker nodes.
+NOTE: This section of the lab will use the embedded terminal and a number of CLI commands to perform advanced operations on virtual machine pods and worker nodes.
 
 . To begin, we are going to leverage our existing *node-affinity-vm* from the previous lab. This will serve as 1 of the 2 VMs we use to demonstrate Affinity.
 

@@ -1,5 +1,8 @@
 = Hot Plugging Virtual Machine Resources
 
+
+== Introduction
+
 One of the benefits of running workloads on virtual machines is the fact that they are just that, virtual. When you consider the maintenance required to expand resources on a physical server, by upgrading a CPU or adding a few extra DIMMs to increase memory, you realize how advantageous it is to be running in a virtual server environment. The same goes for if you need increased disk drive space, or if you'd like to add an additional network interface. In OpenShift Virtualization each of these tasks can be achieved in a hot-plug manner, that is to say while the machine is running without any adverse affect on the applications running on the VM. In this module we will demonstrate this.
 
 .*Goals*

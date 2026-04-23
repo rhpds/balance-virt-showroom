@@ -2,13 +2,13 @@
 
 == Introduction
 
-You can use the descheduler to evict pods based on specific strategies so that the pods can be rescheduled onto more appropriate nodes.  But eviction is a stop and start and no one wants their VMs restarted to achieve this.
+In Kubernetes, on which OpenShift is based, the default behavior when a node starts to feel pressure from a lack of physical resources (CPU/Memory) is to kill running workloads to free up those resources. It does this by using the kube-descheduler to evict pods and have them rescheduled on other nodes with more free resources.
 
-With OpenShift Virtualization, we handle this gracefully through the *virt-api-validator* *validating webhook*. This webhook intercepts all eviction requests and makes a series of decision on how to treat the request.
+In the case of a containerized application with many replicas this often isn't a problem, but in the case of a virtual machine which is a stateful workload, this behavior can lead to serious issues.
 
-The short summary is that when an eviction request is received for a Virtual Machine that is live migratable, that VM is live migrated instead of being evicted.
+With OpenShift Virtualization, we handle the eviction process gracefully through the *virt-api-validator validating webhook*. This webhook intercepts all eviction requests and makes a series of decisions on how to treat the request. If the eviction request is recieved for a virtual machine that has the ability to live migrate, then that less-destructive option is taken.
 
-https://github.com/kubevirt/kubevirt/blob/main/docs/handling-eviction-requests.md[How Evictions are Handled in OpenShift Virtualization]
+For more information on how this works, please see the following link: https://github.com/kubevirt/kubevirt/blob/main/docs/handling-eviction-requests.md[How Evictions are Handled in OpenShift Virtualization^]
 
 You can benefit from descheduling running pods in situations such as the following:
 
@@ -18,17 +18,13 @@ You can benefit from descheduling running pods in situations such as the followi
 * New nodes are added to clusters.
 * Pods have been restarted too many times.
 
-== Objectives
+. *Goals*
 
-In this module, we will guide you through the process of using the *Descheduler* using the *KubeVirtRelieveAndMigrate* profile.
+* Understand the use of the *Kube-Descheduler* using the *KubeVirtRelieveAndMigrate* profile to keep virtual workloads alive.
 
-  ** This profile evicts pods from high-cost nodes to reduce overall resource expenses and enable workload migration. It also periodically rebalances workloads to help maintain similar spare capacity across nodes, which supports better handling of sudden workload spikes. Nodes can experience the following costs:
 
-  *** Resource utilization: Increased resource pressure raises the overhead for running applications.
-  *** Node maintenance: A higher number of containers on a node increases resource consumption and maintenance costs.
-
-[[dynamic_resch_req]]
-== Requirements
+[[dynamice_resch_req]]
+== Prerequisites
 
 * Descheduler Operator is installed
 * The *KubeVirtRelieveAndMigrate* profile is configured
@@ -61,32 +57,26 @@ oc login -u {openshift_cluster_admin_username} -p {openshift_cluster_admin_passw
 [[dynamic_resch_instructions]]
 == Instructions
 
-. Ensure you are <<labaccess,logged in to the OpenShift CLI as the *admin* user>> from the *terminal* window on the right side of your screen and continue to the next step.
+NOTE: The following module contains advanced actions performed in the OpenShift CLI, please ensure you are logged into your cluster in the embedded terminal to the right.
 
-+
-. Start the *dynamic-schedule-vm1* Virtual Machine
-
+. Lets begin this module by starting the *dynamic-schedule-vm1* virtual machine found in the *dynamic-schedule* namespace. This can be done either throught the OpenShift console, or throught the CLI in the embedded console with the following command:
 +
 [.wrap,console,role=execute]
 ----
 virtctl start dynamic-schedule-vm-1 -n dynamic-schedule
 ----
-
 +
 [source,console]
 ----
 VM dynamic-schedule-vm-1 was scheduled to start
 ----
 
-+
-. Check which virtual machine is running in the *dynamic-schedule* namespace
-
+. Check the name of the virtual machine that is running in the *dynamic-schedule* namespace with the following command:
 +
 [.wrap,console,role=execute,subs="attributes"]
 ----
 oc get vmi -n dynamic-schedule
 ----
-
 +
 [source,console]
 ----
@@ -94,15 +84,12 @@ NAME                    AGE     PHASE     IP             NODENAME               
 dynamic-schedule-vm-1   2m41s   Running   10.232.0.240   control-plane-cluster-jlkcx-1   True
 ----
 
-+
-. Observe the Descheduler Operator configuration
-
+. Run the following command in the embedded terminal to observe the Kube-Descheduler operator configuration:
 +
 [.wrap,console,role=execute,subs="attributes"]
 ----
 oc -n openshift-kube-descheduler-operator get kubedescheduler cluster -o yaml
 ----
-
 +
 [source,yaml,role="wrap",subs="attributes"]
 ----
@@ -126,23 +113,15 @@ spec:
   managementState: Managed
 ----
 
-+
-[NOTE]
-====
-By default, the mode is set to *Predictive* which means it only *simulates and logs* potential pod evictions. It does *not* actually perform any evictions.
+NOTE: By default, the mode is set to *Predictive* which means it only *simulates and logs* potential pod evictions. It does *not* actually perform any evictions. To *enable eviction*, set the mode to *Automatic*.
 
-To *enable eviction*, set the mode to *Automatic*.
-====
 
-+
-. Ensure the descheduler pod is running and check the logs in the *openshift-kube-descheduler-operator* namespace
-
+. Ensure the descheduler pod is running and check the logs in the *openshift-kube-descheduler-operator* namespace to confirm with the following command:
 +
 [.wrap,console,role=execute,subs="attributes"]
 ----
 oc logs -n openshift-kube-descheduler-operator -l app=descheduler
 ----
-
 +
 [,shell,subs="attributes"]
 .Output
@@ -159,59 +138,48 @@ I0102 13:57:26.543786       1 profile.go:376] "Total number of evictions/request
 I0102 13:57:26.543827       1 descheduler.go:403] "Number of evictions/requests" totalEvicted=0 evictionRequests=0
 ----
 
-+
-. Deploy a stress test pod to show the descheduler functionality
+. Now we are going to deploy a stress test pod in order to demonstrated the functionality of the *Kube-Descheduler*. We do so by patching the existing *stress-test* deployment to use a *nodeSelector* so that the pod runs on the node where at the VM is running.
 
-+
-.. Patch the existing *stress-test* deployment to use a *nodeSelector* so that the pod runs on the node where at the VM is running.
+. We do this by setting the *nodeSelector* key *kubernetes.io/hostname* dynamically by:
+.. Listing all of the nodes in the cluster.
+.. Filtering the results on the specific node where the *dynamic-schedule-vm-1* virtual machine is running.
 
-+
-We do this by setting the *nodeSelector* key *kubernetes.io/hostname* dynamically by:
-
-... Getting all of the nodes
-... Filter the result on the specific node where the *dynamic-schedule-vm-1* VM is running
-
+. In order to perform these actions, run the following command:
 +
 [.wrap,console,role=execute,subs="attributes"]
 ----
 oc -n dynamic-schedule-stress-test patch deployment stress-test --type merge -p "{\"spec\":{\"template\":{\"spec\":{\"nodeSelector\":{\"kubernetes.io/hostname\":\"$(oc get nodes -o custom-columns=":metadata.name" --no-headers | grep $(oc get vmi dynamic-schedule-vm-1 -n dynamic-schedule -o json | jq -r '.status.nodeName'))\"}}}}}"
 ----
 
-+
-.. Scale the deployment
-
+. To increase the stress on the node we now need to scale the deployment. Do so with the following command:
 +
 [.wrap,console,role=execute,subs="attributes"]
 ----
 oc -n dynamic-schedule-stress-test scale deployment stress-test --replicas=1
 ----
 
-+
-.. Verify the pod is running
-
+. Use the following command to verify that the pod is running:
 +
 [.wrap,console,role=execute,subs="attributes"]
 ----
 oc get pods -n dynamic-schedule-stress-test -o wide
 ----
 
-. Edit the kubedescheduler cluster resource to set the *deschedulingIntervalSeconds* to a lower value for testing purposes.
+. If you recall from the configuration earlier, the default descheduling interval is to assess the status of the cluster every 10 minutes. For the purposes of this lab, we want to decrease that interval so that we can observe it perform the descheuling action.
 
+. We can edit the kubedescheduler cluster resource to set the *deschedulingIntervalSeconds* to a lower value with the following command:
 +
 [.wrap,console,role=execute,subs="attributes"]
 ----
 oc -n openshift-kube-descheduler-operator patch kubedescheduler cluster --type merge -p '{"spec":{"deschedulingIntervalSeconds":5}}'
 ----
 
-+
-. View the descheduler pod logs in the *openshift-kube-descheduler-operator* namespace
-
+. With the interval shortened to 5 seconds, we may now be able to observe the evictions take place. View the descheduler pod logs in the *openshift-kube-descheduler-operator* namespace with the following command:
 +
 [.wrap,console,role=execute,subs="attributes"]
 ----
 oc logs -f -n openshift-kube-descheduler-operator -l app=descheduler
 ----
-
 +
 [source,console]
 ----
@@ -221,31 +189,22 @@ I1113 15:24:57.371273       1 nodeutilization.go:189] "Pods on node" node="worke
 I1113 15:30:00.673653       1 nodeutilization.go:205] "Evicting pods based on priority, if they have same priority, they'll be evicted based on QoS tiers"
 I1113 15:30:00.673755       1 evictions.go:551] "Evicted pod in dry run mode" pod="dynamic-schedule/virt-launcher-dynamic-schedule-vm-1-lltlv" reason="" strategy="LowNodeUtilization" node="worker01" profile="DevKubeVirtRelieveAndMigrate"
 ----
-
 +
-[NOTE]
-====
-We can see that the *virt-launcher-dynamic-schedule-vm-1-lltlv* pod would have been evicted but the *Descheduler* was in *dry run* or *Predictive* mode.
-====
+NOTE: We can see that the *virt-launcher-dynamic-schedule-vm-1-lltlv* pod would have been evicted but the *Descheduler* was in *dry run* or *Predictive* mode.
 
-+
-. To actually evict, set the *Descheduler* mode to *Automatic*.
-
+. To actually allow the descheduler to evict the pods, we need to set the *Descheduler* mode to *Automatic*. We can do so with the following command:
 +
 [.wrap,console,role="execute",subs="attributes"]
 ----
 oc -n openshift-kube-descheduler-operator patch kubedescheduler cluster --type merge -p '{"spec":{"mode":"Automatic"}}'
 ----
 
-+
-. Verify the descheduler pod logs in the openshift-kube-descheduler-operator namespace
-
+. Lets verify the descheduler pod logs in the *openshift-kube-descheduler-operator* namespace one more time.
 +
 [.wrap,console,role="execute",subs="attributes"]
 ----
 oc logs -f -n openshift-kube-descheduler-operator -l app=descheduler
 ----
-
 +
 [,shell,subs="attributes"]
 .Output
@@ -260,24 +219,16 @@ I0102 14:53:52.963035       1 lownodeutilization.go:210] "Node has been classifi
 I0102 14:53:52.963113       1 lownodeutilization.go:210] "Node has been classified" category="underutilized" node="worker-cluster-jlkcx-1" usage={"MetricResource":"7"} usagePercentage={"MetricResource":7}
 I0102 14:53:52.963143       1 lownodeutilization.go:210] "Node has been classified" category="underutilized" node="worker-cluster-jlkcx-2" usage={"MetricResource":"100"} usagePercentage={"MetricResource":100}
 ----
-
 +
-[NOTE]
-====
-We can see that we have one overutilized node where the stress-test pod is running.
+NOTE: We can see that we have one overutilized node where the stress-test pod is running. Because of this the VM will be migrated to another node.
 
-Because of this the VM will be migrated to another node.
-====
 
-+
-. Confirm the pods are evicted and rescheduled on another node (using the *-w* watch parameter as it can take some time for the eviction to happen)
-
+. We can confirm that the pods are evicted and rescheduled on another node (using the *-w* "watch" parameter as it can take some time for the eviction to happen)
 +
 [.wrap,console,role="execute",subs="attributes"]
 ----
 oc get pods -n dynamic-schedule -o wide -w
 ----
-
 +
 [source,console]
 .Output
@@ -287,24 +238,20 @@ virt-launcher-dynamic-schedule-vm-1-lltlv   0/2     Completed   0          31m  
 virt-launcher-dynamic-schedule-vm-1-n6ct7   2/2     Running     0          2m37s   10.234.0.84    worker-cluster-jlkcx-2          <none>           1/1
 ----
 
-+
-. You can confirm the eviction is working by moving the stress test pod to the new node where the VM is running and watch it move again.
-
+. To confirm that the kube-descheduler is working, move the stress test pod to the new node where the VM is now running and repeat the last few steps to watch it move again.
 +
 [.wrap,console,role="execute",subs="attributes"]
 ----
 oc -n dynamic-schedule-stress-test patch deployment stress-test --type merge -p "{\"spec\":{\"template\":{\"spec\":{\"nodeSelector\":{\"kubernetes.io/hostname\":\"$(oc get nodes -o custom-columns=":metadata.name" --no-headers | grep $(oc get vmi dynamic-schedule-vm-1 -n dynamic-schedule -o json | jq -r '.status.nodeName'))\"}}}}}"
 ----
 
-+
-The patch will change the *nodeSelector* and trigger a rollout of the *stress-test* deployment, pushing it back to node where the *dynamic-schedule-vm-1* VM is running.
 
+. The command we just executed will patch the configuration of the *stress-test* deployment by changing the *nodeSelector* which will trigger a new rollout onto the node where the *dynamic-schedule-vm-1* VM is running. The VM will then be evicted and live migrate to another available node.
 +
 [.wrap,console,role="execute",subs="attributes"]
 ----
 oc get pods -n dynamic-schedule -o wide -w
 ----
-
 +
 [,shell,subs="attributes"]
 .Output
@@ -314,21 +261,21 @@ virt-launcher-dynamic-schedule-vm-1-4qhnq   2/2     Running     0          4m28s
 virt-launcher-dynamic-schedule-vm-1-n6ct7   0/2     Completed   0          9m49s   10.234.0.84    worker-cluster-jlkcx-2          <none>           1/1
 ----
 
-[IMPORTANT]
-====
-Scale down the *dynamic-schedule-stress-test* deployment and stop the *dynamic-schedule-vm-1* VM using *virtctl* from your *Terminal* window to ensure you have enough resources for the next labs.
+Congratulations, you have completed this module!
+
+
+IMPORTANT: Scale down the *dynamic-schedule-stress-test* deployment and stop the *dynamic-schedule-vm-1* VM using *virtctl* from your *Terminal* window to ensure you have enough resources for the next labs.
 
 [.wrap,console,role=execute,subs="attributes"]
 ----
 oc -n dynamic-schedule-stress-test scale deployment stress-test --replicas=0
 ----
-
-*deployment.apps/stress-test scaled*
-
++
 [,shell,role="execute wrap",subs="attributes"]
 ----
 virtctl stop dynamic-schedule-vm-1 -n dynamic-schedule
 ----
 
-*VM dynamic-schedule-vm-1 was scheduled to stop*
-====
+== Summary
+
+In this module we explored how eviction policies work for virtual machines and pods, and how we can leverage the kube-descheduler operator in OpenShift Virtualization to ensure the VM workloads are not killed when a node runs out of resources, but instead are live-migrated to another node with enough free resources. We demonstrated this by increasing the load on a worker node where our VM was running, and set the descheduler interval to a short enough amount of time that we could effectively watch the VM migrate as necessary.
