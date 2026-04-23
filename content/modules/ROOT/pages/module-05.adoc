@@ -18,12 +18,13 @@ You can benefit from descheduling running pods in situations such as the followi
 * New nodes are added to clusters.
 * Pods have been restarted too many times.
 
-. *Goals*
+.*Goals*
 
 * Understand the use of the *Kube-Descheduler* using the *KubeVirtRelieveAndMigrate* profile to keep virtual workloads alive.
+* Discover how to edit the configuration of the *Kube-Descheduler* to change it's functionality, and it's eviction interval.
 
 
-[[dynamice_resch_req]]
+[[dynamic_resch_req]]
 == Prerequisites
 
 * Descheduler Operator is installed
@@ -270,7 +271,7 @@ IMPORTANT: Scale down the *dynamic-schedule-stress-test* deployment and stop the
 ----
 oc -n dynamic-schedule-stress-test scale deployment stress-test --replicas=0
 ----
-+
+
 [,shell,role="execute wrap",subs="attributes"]
 ----
 virtctl stop dynamic-schedule-vm-1 -n dynamic-schedule
