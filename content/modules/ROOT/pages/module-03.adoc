@@ -163,13 +163,13 @@ image::exercise3/03-image-disk-013.png[title="Hotplug disk removed", link=self, 
 . Return to the *Console* tab and log into the virtual machine using *Copy to clipboard* and *Paste to console* with the *User name* and *Password* credentials from above the console window.
 
 
-Run the *lsblk* command and you will see that the hot-plugged disk is no longer present on the system.
+. Run the *lsblk* command and you will see that the hot-plugged disk is no longer present on the system.
 +
 image::exercise3/03-image-disk-014.png[title="Hotplug disk removed", link=self, window=blank, width=100%]
 +
 NOTE: The detached disk still exists as a PVC. It can be re-attached, or attached to a different VM, or it can be deleted if it is no longer needed.
 
-To confirm that the persistent disk still exists on the cluster, click on *Storage -> PersistentVolumeClaims* on the left side navigation menu. You will see the disk still listed in the *hot-plug* namespace alongside the standard boot disk.
+. To confirm that the persistent disk still exists on the cluster, click on *Storage -> PersistentVolumeClaims* on the left side navigation menu. You will see the disk still listed in the *hot-plug* namespace alongside the standard boot disk.
 +
 image::exercise3/03-image-disk-015.png[title="Disk is removed in OS", link=self, window=blank, width=100%]
 
