@@ -31,9 +31,9 @@
 ** xref:module-04.adoc#pod_affinity[Pod Affinity]
 ** xref:module-04.adoc#pod_antiaffinity[Pod Anti-Affinity]
 
-* xref:module-05.adoc[Dynamic Rescheduling of Workloads]
+* xref:module-05.adoc[Dynamic Rescheduling of Virtual Workloads]
 ** xref:module-05.adoc#dynamic_resch_req[Prerequisites]
-** xref:module-05.adoc#dynamic_resch_instructions[Instructions]
+** xref:module-05.adoc#dynamic_resch_demo[Demonstrating Dynamic Rescheduling]
 
 * xref:module-06.adoc[Fencing and Node Failure Remediation Scenarios]
 ** xref:module-06.adoc#conf_node_health[Configuring Node Health Checks]
@@ -41,11 +41,10 @@
 
 * xref:module-07.adoc[Cross Cluster Live Migration and Multicluster Scenarios]
 ** xref:module-07.adoc#how_cclm[How Does It work?]
-** xref:module-07.adoc#requirements[Requirements]
-** xref:module-07.adoc#decmlinstructions[CLI Based Instructions]
+** xref:module-07.adoc#prereqs[Prerequisites]
+** xref:module-07.adoc#cli_workflow[CLI-Based Workflow]
 ** xref:module-07.adoc#decmlmonitor[Monitor the Migration]
 ** xref:module-07.adoc#decmluiinstructions[UI Based Instructions]
 ** xref:module-07.adoc#cclm_arcade[Interactive Demo of Cross-Cluster Live Migration]
-
 
 * xref:conclusion.adoc[Conclusion]
