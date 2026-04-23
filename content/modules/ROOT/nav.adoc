@@ -22,7 +22,8 @@
 
 * xref:module-03.adoc[Hot-Plugging Virtual Machine Resources]
 ** xref:module-03.adoc#cpu_mem[Adding CPU and Memory to a running VM]
-** xref:module-03.adoc#disk[Adding a Virtual Disk to a Running VM]
+** xref:module-03.adoc#add_disk[Adding a Virtual Disk to a Running VM]
+** xref:module-03.adoc#remove_hotplug[Remove a Hotplugged Disk]
 ** xref:module-03.adoc#nic[Adding an Additional NIC to a Running VM]
 
 * xref:module-04.adoc[Affinity and Anti-Affinity for Virtual Machines]
