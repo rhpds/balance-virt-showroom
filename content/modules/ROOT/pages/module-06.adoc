@@ -1,6 +1,6 @@
-= Fencing and How to Handle Node Failure
+= Fencing and Node Failure Remediation Scenarios
 
-Fencing is a vital mechanism that safeguards cluster resources and ensures data integrity. It works by isolating an unresponsive or failed node. This process is crucial to prevent the "split-brain" scenario, which occurs when multiple nodes try to write to shared storage simultaneously, inevitably leading to data corruption.
+Fencing is a vital mechanism that safeguards cluster resources and ensures data integrity. It works by isolating an unresponsive or failed node and evacuating all workloads in a timely manner. This process is crucial to prevent the "split-brain" scenario, which occurs when multiple nodes try to write to shared storage simultaneously, inevitably leading to data corruption.
 
 This lab demonstrates the capabilities of the *Node Health Check Operator* and the *Self Node Remediation Operator*. You will simulate a node failure to observe the virtual machine migration process and subsequent node recovery.
 
@@ -30,8 +30,8 @@ oc login -u {openshift_cluster_admin_username} -p {openshift_cluster_admin_passw
 ----
 
 
-[[fencing_instructions]]
-== Instructions
+[[conf_node_health]]
+== Configuring Node Health Checks
 
 For this next portion of our lab we need to exit the *Virtualization* perspective and return to the *Core platform* perpective.
 
@@ -52,11 +52,17 @@ image::exercise6/06-image-nodehealthcheck-v2.png[title="Create NodeHealthCheck",
 * Change duration to *5s* for both of the *Unhealthy conditions*.
 +
 . Click the *Create* button.
++
 image::exercise6/06-image-nodehealthcheck2.png[title="Create NodeHealthCheck", link=self, window=blank, width=100%]
 +
 image::exercise6/06-image-nodehealthcheck3.png[title="Create NodeHealthCheck", link=self, window=blank, width=100%]
 
 . Once created you should be returned to the *NodeHealthCheck* page where it shows that the policy we just created is now enabled. 
+
+[[failure_sim]]
+== Simulating a Node Failure
+
+Now we are going to simulate a node failure and see how OpenShift Virtualization handles the situation.
 
 . Using the left side navigation menu, return to the *Virtualization* perspective by clicking on the *Core platform* dropdown, and selecting the *Virtualization* option.
 +
@@ -79,7 +85,6 @@ oc get vmi fencing-vm1 -n fencing
 NAME          AGE    PHASE     IP            NODENAME                 READY
 fencing-vm1   3m53s  Running   10.234.0.74   worker-cluster-l2tlf-2   True
 ----
-
 . To make later exercises easier, we can store the worker node name as a variable. We can use the *jq* command to only return the *nodeName* field, and assign that to a variable for later use:
 +
 [source,text,role=execute]
@@ -144,6 +149,7 @@ image::exercise6/06-image-nodehealthcheck-nodefail.png[title="Node failed", link
 oc get vmi fencing-vm1 -n fencing -w
 ----
 +
+.Output
 [source,console]
 ----
 NAME          AGE   PHASE     IP            NODENAME                 READY
@@ -172,7 +178,7 @@ image::exercise6/06-image-nodehealthcheck-vmrun.png[title="VM back running", lin
 Congratulations, you have completed this module!
 
 
-IMPORTANT: Be sure to shut down *fencing-vm-1* when you complete this module to ensure that there are enough resources in the cluster to complete the other modules.
+IMPORTANT: Be sure to shut down *fencing-vm-1* when you complete this module to ensure that there are enough resources in the cluster to complete the other modules. You can perform this action through the OpenShift console by clicking the *Stop* button or using the *Actions* dropdown.
 
 == Summary
 

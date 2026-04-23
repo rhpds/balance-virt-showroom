@@ -36,7 +36,8 @@
 ** xref:module-05.adoc#dynamic_resch_instructions[Instructions]
 
 * xref:module-06.adoc[Fencing and Node Failure Remediation Scenarios]
-** xref:module-06.adoc#fencing_instructions[Instructions]
+** xref:module-06.adoc#conf_node_health[Configuring Node Health Checks]
+** xref:module-06.adoc#failure_sim[Simulating a Node Failure]
 
 * xref:module-07.adoc[Cross Cluster Live Migration and Multicluster Scenarios]
 ** xref:module-07.adoc#how_cclm[How Does It work?]
