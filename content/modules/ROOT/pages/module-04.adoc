@@ -4,7 +4,9 @@ Affinity and Anti-affinity are a set of rules that allow us to select where a vi
 
 .*Goals*
 
-* Understand configurations behind virtual machine placement for Affinity and Anti-affinity.
+* Understand how node affinity can help you deterministically schedule where your VMs are placed.
+* Understand how pod affinity rules can help workloads with co-dependencies be scheduled together for better performance.
+* Understand how pod anti-affinity rules can ensure that workloads are segregated to provide high availability and increase fault tolerance.
 
 [[labaccess]]
 == Accessing the OpenShift Cluster
@@ -128,7 +130,7 @@ Note: This section of the lab will use the embedded terminal and a number of CLI
 oc edit vm node-affinity-vm -n affinity
 ----
 +
-[source,yaml]
+[source,yaml,subs="attributes"]
 ----
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
@@ -137,7 +139,7 @@ metadata:
     kubemacpool.io/transaction-timestamp: "2026-01-16T18:46:28.5004163Z"
   generation: 3
   labels:
-    app.kubernetes.io/instance: module-affinity  <---Do not put the label here
+    app.kubernetes.io/instance: module-affinity  *<---Do not put the label here*
   name: node-affinity-vm
   namespace: affinity
   resourceVersion: "714752"
@@ -167,7 +169,7 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        app: fedora <---Put the label here
+        app: fedora *<---Put the label here*
         network.kubevirt.io/headlessService: headless
     spec:
       affinity:
@@ -274,7 +276,7 @@ image::exercise4/04-image-affinity04.png[title="Pod-affinity-vm Configuration", 
 +
 image::exercise4/04-image-affinity04a.png[title="Pod Affinity Rule", link=self, window=blank, width=100%]
 
-. Change the *type* to *Workload (pod) Affinity*, and keep the *Condition* set to *Required during scheduling* and leave the *Topology key* at the default value.
+. Change the *Type* to *Workload (pod) Affinity*, and keep the *Condition* set to *Required during scheduling* and leave the *Topology key* at the default value.
 
 . Click *Add expression* under *Workload labels* and set the *Key* field to `app` and the *Values* field to `fedora` and click *Add*. 
 +
@@ -389,13 +391,13 @@ image::exercise4/04-image-affinity09.png[title="Pod-anti-affinity-vm Configurati
 +
 image::exercise4/04-image-affinity06.png[title="Add Pod Anti-Affinity Rule", link=self, window=blank, width=100%]
 
-. Change the *type* to *Workload (pod) Anti-Affinity*, and keep the *Condition* set to *Required during scheduling* and leave the *Topology key* at the default value. 
+. Change the *Type* to *Workload (pod) Anti-Affinity*, and keep the *Condition* set to *Required during scheduling* and leave the *Topology key* at the default value. 
 
 . Click *Add expression* under *Workload labels* and set the *Key* field to `app` and the *Values* field to `fedora` and click *Add*.
 +
 NOTE:This is the same label applied to the the previous two VMs.
 
-Your Final Pod Affinity rule will look like the picture below, once satisfied click the *Save affinity rule* button.
+.Your final pod affinity rule will look like the picture below, once satisfied click the *Save affinity rule* button.
 +
 image::exercise4/04-image-affinity07.png[title="Add Pod Anti-Affinity Rule", link=self, window=blank, width=100%]
 
