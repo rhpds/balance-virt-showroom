@@ -11,8 +11,9 @@ view_switcher:
   default_mode: split
 
 tabs:
+  # Terminal
   - name: Web Terminal
-    path: /wetty
+    path: /terminal
     port: 443
   # Console
   - name: OCP Console
