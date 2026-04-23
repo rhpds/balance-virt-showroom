@@ -13,8 +13,7 @@ view_switcher:
 tabs:
   # Terminal
   - name: Web Terminal
-    path: /terminal
-    port: 443
+    path: /wetty
   # Console
   - name: OCP Console
     url: 'https://console-openshift-console.${DOMAIN}'
