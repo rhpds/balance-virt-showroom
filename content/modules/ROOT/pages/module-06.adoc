@@ -6,7 +6,8 @@ This lab demonstrates the capabilities of the *Node Health Check Operator* and t
 
 . *Goals*
 
-* Understand how fencing a node works during a failure scenario
+* Understand how to configure a nodeHealthCheck policy.
+* Understand how fencing a node works during a simulated failure scenario.
 
 
 [[labaccess]]
@@ -32,123 +33,109 @@ oc login -u {openshift_cluster_admin_username} -p {openshift_cluster_admin_passw
 [[fencing_instructions]]
 == Instructions
 
-. Ensure you are <<labaccess,logged in to both the OpenShift Console and CLI as the *admin* user>> from your *web browser* and the *terminal* window on the right side of your screen and continue to the next step.
+For this next portion of our lab we need to exit the *Virtualization* perspective and return to the *Core platform* perpective.
 
+. Using the OpenShift Console, from the left side navigation menu, select the dropdown for *Virtualization* and then select *Core platform*. You will be taken to the *Overview* page for your cluster.
 +
-. Using the OpenShift Console, from the left side panel, navigate to *Compute → NodeHealthChecks*.
+image::exercise6/06-image-nodehealthcheck-00.png[title="Return to Core Platform", link=self, window=blank, width=100%]
 
-+
-Click the *Create NodeHealthCheck* button
-
+. From there navigate to *Compute → NodeHealthChecks*, you will see that there are currently no *NodeHealthChecks* to be found. Click the *Create NodeHealthCheck* button.
 +
 image::exercise6/06-image-nodehealthcheck-v2.png[title="Create NodeHealthCheck", link=self, window=blank, width=100%]
 
+. A new page will launch, fill it out with the following info:
 +
-. Name the *NodeHealthCheck* `workerhealthcheck`.
-
+* Name the *NodeHealthCheck* `workerhealthcheck`. 
+* Leave the *Remediation template* set to *Self node remediation*.
+* From the *Selector labels* dropdown, select *Worker* under *Role*. You do not need to select any additional *Labels*.
+* Leave *Min healthy* and both *Type* and *Status* drop downs as the default.
+* Change duration to *5s* for both of the *Unhealthy conditions*.
 +
-Leave the *Remediation template* set to *Self node remediation*.
-
-+
-From the *Selector labels* dropdown, select *Worker* under *Role*. You do not need to select any *Labels*.
-
-+
+. Click the *Create* button.
 image::exercise6/06-image-nodehealthcheck2.png[title="Create NodeHealthCheck", link=self, window=blank, width=100%]
-
-+
-Further down on the same screen, leave *Min healthy* and both *Type* and *Status* drop downs as the default.
-
-+
-Change duration to *5s* for both of the *Unhealthy Conditions*.
-
 +
 image::exercise6/06-image-nodehealthcheck3.png[title="Create NodeHealthCheck", link=self, window=blank, width=100%]
 
-+
-Click *Create*
+. Once created you should be returned to the *NodeHealthCheck* page where it shows that the policy we just created is now enabled. 
 
+. Using the left side navigation menu, return to the *Virtualization* perspective by clicking on the *Core platform* dropdown, and selecting the *Virtualization* option.
 +
-. Next, find the node where *fencing-vm1* is running. In this example, the node is *worker-cluster-r2k68-1*.
+image::exercise6/06-image-nodehealthcheck-virt.png[title="Return to Virtualization", link=self, window=blank, width=100%]
 
+. Once you are in the *Virtualization* perspective, use the left side navigation menu to select *VirtualMachines*, find the *fencing* project in the center column and expand it to see the *fencing-vm1* virtual machine. Power on this machine with the *Play* button or *Actions* menu.
++
+image::exercise6/06-image-nodehealthcheck-poweron.png[title="Power-on VM", link=self, window=blank, width=100%]
+
+. For the next step we need to determine which node is currently hosting *fencing-vm1*. We can do that by checkign the *General* box on the VM *Overview* page, or with the following command in our embedded terminal:
 +
 [source,text,role=execute]
 .Get VM info
 ----
 oc get vmi fencing-vm1 -n fencing
 ----
-
 +
 .Output
 ----
 NAME          AGE    PHASE     IP            NODENAME                 READY
-fencing-vm1   169m   Running   10.235.0.29   worker-cluster-r2k68-1   True
+fencing-vm1   3m53s  Running   10.234.0.74   worker-cluster-l2tlf-2   True
 ----
 
-+
-To be more percise, you can use *jq* to only return the *nodeName* and assign it to a variable for later use:
-
+. To make later exercises easier, we can store the worker node name as a variable. We can use the *jq* command to only return the *nodeName* field, and assign that to a variable for later use:
 +
 [source,text,role=execute]
 .Get VM info into a variable
 ----
 node=`oc get vmi fencing-vm1 -n fencing -o json | jq -r '.status.nodeName'`
 ----
-
 +
 [source,text,role=execute]
 .Show node name
 ----
 echo ${node}
 ----
-
 +
 .Output
 ----
-worker-cluster-r2k68-1
+worker-cluster-l2tlf-2
 ----
 
-+
-. Before we trigger a failure, in second terminal, start a watch to monitor the state of the nodes so you can see your worker remediate.
+. Before we trigger a failure, let us take a look at our nodes in the OpenShift console.
 
+. In the left side navigation menu click on *Compute -> Nodes* and you will see all of your cluster nodes listed, and their status will show as *Ready*.
 +
-[source,text,role=execute]
-.Monitor the worker nodes
-----
-oc get nodes -w
-----
+image::exercise6/06-image-nodehealthcheck-nodelist.png[title="Node list", link=self, window=blank, width=100%]
 
-+
-. Create a failure condition, access the node from step 4, using the *${node}* variable and *oc debug*, to put it into an unhealthy state by stopping the *kubelet* service.
-
+. Now we are going to create a failure condition. Back on the embedded terminal, we are going to access the node from step 4, using the *${node}* variable and the *oc debug* command, to put it into an unhealthy state by stopping the *kubelet* service. You can perform this action with the following syntax:
 +
 [source,text,role=execute]
 .Debug into the node
 ----
 oc debug node/${node}
 ----
-
 +
 [source,text,role=execute]
 .chroot
 ----
 chroot /host
 ----
-
 +
 [source,text,role=execute]
 .Force the node into a unhealthy state
 ----
 systemctl stop kubelet
 ----
-
 +
 .Output
 ----
 Removing debug pod ...
 ----
 
+. Check back on your OpenShift console and you will see that the worker node where we forced the failure is now in a *Not Ready* state.
 +
-. Once the *debug pod* exists, monitor the status of your Virtual Machine, *fencing-vm1*. You will see that the self remediation process is isolating the node and migrating the workloads.
+image::exercise6/06-image-nodehealthcheck-nodefail.png[title="Node failed", link=self, window=blank, width=100%]
+
+
+. Once the *debug pod* exits, you can monitor the status of your Virtual Machine, *fencing-vm1* by running a `watch` command. You will see that the self remediation process is isolating the node and migrating the workloads.
 
 +
 [source,text,role=execute]
@@ -156,67 +143,37 @@ Removing debug pod ...
 ----
 oc get vmi fencing-vm1 -n fencing -w
 ----
-
-+
-. Using the OpenShift Console, from the left side panel, navigate to *Ecosystem → Installed Operators → Self Node Remediation Operator → Self Node Remediation*.
-
-+
-[NOTE]
-====
-The *SelfNodeRemediation* operand will not show up until the node goes *NotReady*, this will take a few seconds.
-====
-
-+
-Here you can see the self remediation object and follow its progress against the node.
-
-+
-image::exercise6/06-image-nodehealthcheck4.png[title="Node remediation running", link=self, window=blank, width=100%]
-
-+
-. From your two terminal windows, you will see:
-
-+
-.. The worker node being remediated, going from *Ready* → *NotReady* → *NotReady,SchedulingDisabled* → *Ready,SchedulingDisabled* → *Ready*
-
 +
 [source,console]
 ----
-NAME                     STATUS                        ROLES    AGE     VERSION
-worker-cluster-r2k68-1   Ready                         worker   4h15m   v1.33.5
-worker-cluster-r2k68-1   Ready                         worker   4h16m   v1.33.5
-worker-cluster-r2k68-1   NotReady                      worker   4h16m   v1.33.5
-worker-cluster-r2k68-1   NotReady                      worker   4h16m   v1.33.5
-worker-cluster-r2k68-1   NotReady,SchedulingDisabled   worker   4h16m   v1.33.5
-worker-cluster-r2k68-1   NotReady,SchedulingDisabled   worker   4h16m   v1.33.5
-worker-cluster-r2k68-1   Ready,SchedulingDisabled      worker   4h17m   v1.33.5
-worker-cluster-r2k68-1   Ready,SchedulingDisabled      worker   4h17m   v1.33.5
-worker-cluster-r2k68-1   Ready,SchedulingDisabled      worker   4h17m   v1.33.5
-worker-cluster-r2k68-1   Ready                         worker   4h18m   v1.33.5
-worker-cluster-r2k68-1   Ready                         worker   4h18m   v1.33.5
+NAME          AGE   PHASE     IP            NODENAME                 READY
+fencing-vm1   21m   Running   10.234.0.74   worker-cluster-l2tlf-2   True
+fencing-vm1   21m   Running   10.234.0.74   worker-cluster-l2tlf-2   False
+fencing-vm1   23m   Running   10.234.0.74   worker-cluster-l2tlf-2   False
+fencing-vm1   23m   Failed    10.234.0.74   worker-cluster-l2tlf-2   False
+fencing-vm1   23m   Failed    10.234.0.74   worker-cluster-l2tlf-2   False
+fencing-vm1   23m   Failed    10.234.0.74   worker-cluster-l2tlf-2   False
+fencing-vm1   23m   Failed    10.234.0.74   worker-cluster-l2tlf-2   False
+fencing-vm1   0s    Pending                                          
+fencing-vm1   0s    Pending                                          
+fencing-vm1   0s    Scheduling                                       False
+fencing-vm1   0s    Scheduling                                       False
+fencing-vm1   10s   Scheduled               worker-cluster-l2tlf-1   False
+fencing-vm1   12s   Scheduled               worker-cluster-l2tlf-1   False
+fencing-vm1   12s   Running   10.233.0.29   worker-cluster-l2tlf-1   False
+fencing-vm1   12s   Running   10.233.0.29   worker-cluster-l2tlf-1   True
+fencing-vm1   12s   Running   10.233.0.29   worker-cluster-l2tlf-1   True
 ----
 
+. Return to your OpenShift console and click on *VirtualMachines*, and expand the *fencing* folder and click on the *fencing-vm1* virtual machine to confirm it's status. Confirm that is is back running after the unexpected node failure, and that it is now scheduled on a different worker node.
 +
-.. The VM will go from a *Running* → *Failed* state when the nodes fails, followed by *Pending* → *Scheduling* → *Scheduled* → *Running* as it is remediated and migrated to a new node.
+image::exercise6/06-image-nodehealthcheck-vmrun.png[title="VM back running", link=self, window=blank, width=100%]
 
-+
-[source,console]
-----
-NAME          AGE   PHASE        IP            NODENAME                 READY
-fencing-vm1   36m   Running      10.235.0.14   worker-cluster-r2k68-1   True
-fencing-vm1   37m   Running      10.235.0.14   worker-cluster-r2k68-1   False
-fencing-vm1   38m   Failed       10.235.0.14   worker-cluster-r2k68-1   False
-fencing-vm1   38m   Failed       10.235.0.14   worker-cluster-r2k68-1   False
-fencing-vm1   0s    Pending
-fencing-vm1   1s    Scheduling                                          False
-fencing-vm1   10s   Scheduled                  worker-cluster-r2k68-3   False
-fencing-vm1   10s   Running      10.232.2.41   worker-cluster-r2k68-3   True
-----
-
-+
+Congratulations, you have completed this module!
 
 
 IMPORTANT: Be sure to shut down *fencing-vm-1* when you complete this module to ensure that there are enough resources in the cluster to complete the other modules.
 
 == Summary
 
-In this module we explored node remediation and fencing, which are critical to configure when it comes to protecting your virtualized workloads in the case of a node failure. Appropriate fencing takes a stalled node offline allowing workloads that were scheduled there to be appropriately scheduled elsewhere in the cluster, and to continue running without creating a split-brain scenario that could endanger the state of the VM.
+In this module we explored node remediation and fencing, which are critical to configure when it comes to protecting your virtualized workloads in the case of a node failure. Appropriate fencing takes a stalled node offline allowing workloads that were scheduled there to be appropriately scheduled elsewhere in the cluster, in a more rapid fashion, avoiding extended downtime and protecting workloads from creating a split-brain scenario that could endanger the state of the VM.

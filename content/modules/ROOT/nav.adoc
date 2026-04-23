@@ -32,6 +32,7 @@
 ** xref:module-04.adoc#pod_antiaffinity[Pod Anti-Affinity]
 
 * xref:module-05.adoc[Dynamic Rescheduling of Workloads]
+** xref:module-05.adoc#dynamic_resch_req[Prerequisites]
 ** xref:module-05.adoc#dynamic_resch_instructions[Instructions]
 
 * xref:module-06.adoc[Fencing and Node Failure Remediation Scenarios]

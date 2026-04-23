@@ -72,6 +72,8 @@ virtctl start dynamic-schedule-vm-1 -n dynamic-schedule
 VM dynamic-schedule-vm-1 was scheduled to start
 ----
 
+
+
 . Check the name of the virtual machine that is running in the *dynamic-schedule* namespace with the following command:
 +
 [.wrap,console,role=execute,subs="attributes"]
