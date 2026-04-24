@@ -1,6 +1,6 @@
-= Decentralized Live Migration
+= Cross Cluster Live Migration and Multicluster Scenarios
 
-A decentralized live migration is an advanced variation of a storage live migration, which we covered earlier in this lab, that allows you to migrate a running *VirtualMachine* between *namespaces* and *clusters*.
+Cross-cluster live migration is based upon the idea of decentralized live migration which is an advanced variation of a storage live migration, that we covered earlier in this lab. It effectively allows you to migrate a running *VirtualMachine* between different *namespaces* within a cluster and between completely remote *clusters* if so desired.
 
 This can be useful for the following reasons:
 
@@ -12,17 +12,15 @@ This can be useful for the following reasons:
 
 This lab demonstrates capabilities of Decentralized Live Migration. In this lab, we will walk through the live migration of a *VirtualMachine* from one *Namespace* to another. The process of live migrating between namespaces follows the same process as if you were to migrate a *VirtualMachine* between 2 separate clusters in a multi-cloud environment.
 
-NOTE: This portion of the lab introduces a new capability that just became GA in OpenShift 4.21. As such, the UI-based workflow is not fully developed and should improve dramatically in upcoming OpenShift releases. During this lab we will introduce you to the UI workflow, but a majority of the tasks will be performed through the CLI.
-
 [[how_cclm]]
 == How does it work?
 
-The migration involves two *VirtualMachineInstances* and two *VirtualMachineInstanceMigration* objects. Like a storage live migration, disk contents are copied over the network to the receiving *VirtualMachine*. The key difference is that the receiving virtual machine has a completely separate *VirtualMachineInstance*. In order to coordinate the migration, the status of the source and target *VirtualMachineInstance* has to be synchronized. A dedicated synchronization controller, running in the *openshift-cnv* namespace facilitates communication between the source and target *VirtualMachineInstances*.
+The migration involves two *VirtualMachineInstances* and two *VirtualMachineInstanceMigration* objects. Like a storage live migration, disk contents are copied over the network to the receiving *VirtualMachine*. The key difference is that the receiving virtual machine has a completely separate *VirtualMachineInstance*. In order to coordinate the migration, the status of the source and target *VirtualMachineInstance* has to be synchronized. A dedicated synchronization controller, running in the *openshift-cnv* namespace facilitates communication between the source and target *VirtualMachineInstances* to complete this sychronization and allow the machine to fully migrate.
 
 [[prereqs]]
 == Prerequisites
 
-These requirements have already been enabled on your cluster and are noted for your reference.
+Unlike standard live migration of workloads in an OpenShift Virtualization environment there are some additional prequisites required to enable this functionality.
 
 * The *Migration Toolkit for Virtualization (MTV)* Operator must be installed with the feature *feature_ocp_live_migration* set to *true* when creating the *ForkliftController* Custom Resource.
 * You must enable the *decentralizedLiveMigration* *featureGate* on the *hyperconverged* Custom Resource.
@@ -643,5 +641,5 @@ Congratulations, you have completed this module!
 
 == Summary
 
-In this module we explored decentralized live migration within a cluster, across namespaces. This is the basic technology that allows us to live migrate workloads between remote clusters, and helps set us up for the future of a true hybrid multicloud environment.
+In this module we built on the concept of live migration that we explored earlier in this lab to introduce the concept of a cross-cluster live migration in a true hybrid multicloud environment.
 
