@@ -27,6 +27,7 @@ These requirements have already been enabled on your cluster and are noted for y
 * The *Migration Toolkit for Virtualization (MTV)* Operator must be installed with the feature *feature_ocp_live_migration* set to *true* when creating the *ForkliftController* Custom Resource.
 * You must enable the *decentralizedLiveMigration* *featureGate* on the *hyperconverged* Custom Resource.
 
+////
 [[labaccess]]
 == Accessing the OpenShift Cluster
 
@@ -624,6 +625,8 @@ You can follow https://issues.redhat.com/browse/CNV-72966[CNV-72966 - loosen (or
 
 +
 image::exercise7/ui/image12-plan-created-error.png[title="Plan Details", link=self, window=blank, width=100%]
+
+////
 
 [[cclm_arcade]]
 == Interactive Demo of Cross-Cluster Live Migration
