@@ -2,7 +2,7 @@
 type: showroom
 
 # Set the left column width to 30%
-default_width: 30
+default_width: 50
 # Persist the URL state so browser refresh doesn't reset the UI
 persist_url_state: true
 
@@ -12,8 +12,8 @@ view_switcher:
 
 tabs:
   # Terminal
-  - name: Web Terminal
-    path: /wetty
+  - name: Terminal
+    path: /terminal
     port: 443
   # Console
   - name: OCP Console
