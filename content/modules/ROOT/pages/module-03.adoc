@@ -94,7 +94,7 @@ NOTE: You may notice that the amount of memory shown is actually less than 4GiB.
 
 In this portion of the lab, we will hot add a new disk to an existing VM using the OpenShift console. To do this, you will start with an existing running VM that already has one more disks configured, and add an additional one.
 
-In the left side navigation menu click on *Virtualization*, expand the *hot-plug* namespace, and select the *hot-plug-vm1* virtual machine.
+. In the left side navigation menu click on *Virtualization*, expand the *hot-plug* namespace, and select the *hot-plug-vm1* virtual machine.
 +
 image::exercise3/03-image-disk-001.png[title="hot-plug-vm1 details", link=self, window=blank, width=100%]
 
