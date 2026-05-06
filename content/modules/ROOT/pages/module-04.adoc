@@ -332,7 +332,7 @@ virtctl restart pod-affinity-vm -n affinity
 VM pod-affinity-vm was scheduled to restart
 ----
 
-. Once the VM has been retarted, the pod affinity will be in effect. We can validate this by running the `oc get vmi` command again on the embedded terminal:
+. Once the VM has been restarted, the pod affinity will be in effect. We can validate this by running the `oc get vmi` command again on the embedded terminal:
 +
 [source,text,role=execute]
 ----
@@ -397,9 +397,9 @@ image::exercise4/04-image-affinity06.png[title="Add Pod Anti-Affinity Rule", lin
 
 . Click *Add expression* under *Workload labels* and set the *Key* field to `app` and the *Values* field to `fedora` and click *Add*.
 +
-NOTE:This is the same label applied to the the previous two VMs.
+NOTE: This is the same label applied to the the previous two VMs.
 
-.Your final pod affinity rule will look like the picture below, once satisfied click the *Save affinity rule* button.
+. Your final pod affinity rule will look like the picture below, once satisfied click the *Save affinity rule* button.
 +
 image::exercise4/04-image-affinity07.png[title="Add Pod Anti-Affinity Rule", link=self, window=blank, width=100%]
 
