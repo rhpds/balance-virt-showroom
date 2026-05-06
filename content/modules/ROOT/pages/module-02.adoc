@@ -202,7 +202,7 @@ oc get vmi -A -o wide | grep $(oc get vmi overcommit-vm-1 -n over-commit -o json
 .Output
 ----
 NAME              AGE   PHASE     IP             NODENAME                        READY   LIVE-MIGRATABLE
-overcommit-vm-1   16m   Running   10.234.0.52   worker-cluster-bj7mh-1           True    True 
+overcommit-vm-1   16m   Running   10.234.0.52   worker-cluster-bj7mh-1           True    True
 ----
 
 . In order to figure out our current overcommit ratio, we need to sum the CPUs for all of the VMs currently running on the node.
@@ -274,7 +274,7 @@ image::exercise2/pod-cpu-details.png[title="Confirm number of CPUs", link=self, 
 [[understanding_memory]]
 == Understanding Memory Overcommit
 
-Prior to the release of OpenShift 4.21, based on Kubernetes 1.21, there was not a generally available native SWAP implementation in Kubernetes. In earlier releases OpenShift Virtualization worked around this lack of feature availability by utilizing the *wasp-agent* add-on. 
+Prior to the release of OpenShift 4.21, based on Kubernetes 1.21, there was not a generally available native SWAP implementation in Kubernetes. In earlier releases OpenShift Virtualization worked around this lack of feature availability by utilizing the *wasp-agent* add-on.
 
 Refer to the https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/virtualization/postinstallation-configuration#virt-using-wasp-agent-to-configure-higher-vm-workload-density_virt-configuring-higher-vm-workload-density[wasp-agent component documentation] for more information.
 
@@ -282,7 +282,7 @@ Memory oversubscription without use of swap is hazardous because if the amount o
 
 The *memoryOvercommitPercentage* parameter on the *hyperconverged* Custom Resources tells OpenShift Virtualization how to scale the memory requests for each VM. When set to the default, 100, it calculates memory requests based on the full amount of memory declared by the VM. When it's set to a higher value, the request is set to a proportionally smaller value than the VM requested, allowing for memory overcommit.
 
-For example, this think of a VM assigned 16GiB of memory. If the overcommit percentage is set to its default value of 100%, the memory request on the pod will be defined as 16 GiB, plus an extra allocation for the qEMU process running the VM.
+For example, think of a VM assigned 16GiB of memory. If the overcommit percentage is set to its default value of 100%, the memory request on the pod will be defined as 16 GiB, plus an extra allocation for the qEMU process running the VM.
 
 If it's set to 200%, the request on the pod will be set to 8GiB, plus the additional overhead, with the VM still seeing 16GiB.
 
@@ -301,7 +301,7 @@ or, with 150% overcommit
 16 * (100 / 150) = 10.66GiB
 ====
 
-[NOTE] 
+[NOTE]
 ====
 Memory overhead per virtual machine ≈ (0.002 × requested memory) + 218 MiB + 8 MiB × (number of vCPUs) + 16 MiB × (number of graphics devices) + (additional memory overhead)
 
@@ -330,7 +330,7 @@ oc get vm -n over-commit overcommit-vm-1 -o json | jq .spec.template.spec.domain
 }
 ----
 
-. Just like we did with CPU in the previous section, the amount of memory being requested for a virtual machine can be easily located in the pod defintion of the VM. To find this information we can select the pod name from the *General* field on the *Overview* of our VM in the OpenShift console.
+. Just like we did with CPU in the previous section, the amount of memory requested for a virtual machine can be located easily in the pod defintion of the VM. To find this information we can select the pod name from the *General* field on the *Overview* of our VM in the OpenShift console.
 +
 image::exercise2/vm-pod.png[title="VM Pod", link=self, window=blank, width=100%]
 
@@ -358,7 +358,7 @@ NOTE: The *virt-launcher* pod is requesting 2564MiB which is 2048MiB + **overhea
 
 Now lets turn on Memory Overcommit for virtual machine workloads and see how that changes things.
 
-. In the left side navigation menu in the OpenShift Console click on *Overview* followed by the *Settings* tab. Expand the section for *General Settings* and finally expand the section for *Memory Density*. 
+. In the left side navigation menu in the OpenShift Console click on *Overview* followed by the *Settings* tab. Expand the section for *General Settings* and finally expand the section for *Memory Density*.
 +
 image::exercise2/enable-memory-overcommit.png[title="Enable Memory Overcommit", link=self, window=blank, width=100%]
 
