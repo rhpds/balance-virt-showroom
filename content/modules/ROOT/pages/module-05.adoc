@@ -113,10 +113,9 @@ spec:
   deschedulingIntervalSeconds: 3600
   managementState: Managed
 ----
-
++
 NOTE: By default, the mode is set to *Predictive* which means it only *simulates and logs* potential pod evictions. It does *not* actually perform any evictions. To *enable eviction*, set the mode to *Automatic*.
-
-
++
 . Ensure the descheduler pod is running and check the logs in the *openshift-kube-descheduler-operator* namespace to confirm with the following command:
 +
 [.wrap,console,role=execute,subs="attributes"]
