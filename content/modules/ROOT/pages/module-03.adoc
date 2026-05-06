@@ -40,7 +40,7 @@ In this part of the lab, we will add additional CPU and Memory resources to a Vi
 +
 image::exercise3/03-image-cpu-000.png[title="Start the VM", link=self, window=blank, width=100%]
 
-While the VM is booting up make a note of the InstanceType which is *u1.small*, and the current *CPU | Memory* for this VM, which is *1 CPU | 2GiB Memory*
+. While the VM is booting up make a note of the InstanceType which is *u1.small*, and the current *CPU | Memory* for this VM, which is *1 CPU | 2GiB Memory*
 +
 image::exercise3/03-image-cpu-001.png[title="CPU and Memory before hot plug", link=self, window=blank, width=100%]
 
