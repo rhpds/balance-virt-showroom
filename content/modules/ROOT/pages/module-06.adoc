@@ -45,7 +45,7 @@ image::exercise6/06-image-nodehealthcheck-v2.png[title="Create NodeHealthCheck",
 
 . A new page will launch, fill it out with the following info:
 +
-* Name the *NodeHealthCheck* `workerhealthcheck`. 
+* Name the *NodeHealthCheck* `workerhealthcheck`.
 * Leave the *Remediation template* set to *Self node remediation*.
 * From the *Selector labels* dropdown, select *Worker* under *Role*. You do not need to select any additional *Labels*.
 * Leave *Min healthy* and both *Type* and *Status* drop downs as the default.
@@ -57,7 +57,7 @@ image::exercise6/06-image-nodehealthcheck2.png[title="Create NodeHealthCheck", l
 +
 image::exercise6/06-image-nodehealthcheck3.png[title="Create NodeHealthCheck", link=self, window=blank, width=100%]
 
-. Once created you should be returned to the *NodeHealthCheck* page where it shows that the policy we just created is now enabled. 
+. Once created you should be returned to the *NodeHealthCheck* page where it shows that the policy we just created is now enabled.
 
 [[failure_sim]]
 == Simulating a Node Failure
@@ -160,8 +160,8 @@ fencing-vm1   23m   Failed    10.234.0.74   worker-cluster-l2tlf-2   False
 fencing-vm1   23m   Failed    10.234.0.74   worker-cluster-l2tlf-2   False
 fencing-vm1   23m   Failed    10.234.0.74   worker-cluster-l2tlf-2   False
 fencing-vm1   23m   Failed    10.234.0.74   worker-cluster-l2tlf-2   False
-fencing-vm1   0s    Pending                                          
-fencing-vm1   0s    Pending                                          
+fencing-vm1   0s    Pending
+fencing-vm1   0s    Pending
 fencing-vm1   0s    Scheduling                                       False
 fencing-vm1   0s    Scheduling                                       False
 fencing-vm1   10s   Scheduled               worker-cluster-l2tlf-1   False
@@ -178,7 +178,7 @@ image::exercise6/06-image-nodehealthcheck-vmrun.png[title="VM back running", lin
 Congratulations, you have completed this module!
 
 
-IMPORTANT: Be sure to shut down *fencing-vm-1* when you complete this module to ensure that there are enough resources in the cluster to complete the other modules. You can perform this action through the OpenShift console by clicking the *Stop* button or using the *Actions* dropdown.
+IMPORTANT: Be sure to *stop fencing-vm-1* when you complete this module to ensure that there are enough resources in the cluster to complete the other modules. You can perform this action through the OpenShift console by clicking the *Stop* button or using the *Actions* dropdown.
 
 == Summary
 
