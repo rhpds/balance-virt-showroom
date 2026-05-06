@@ -2,9 +2,9 @@
 
 == Introduction
 
-Live migration of workloads between compute nodes and storage types is a crucial feature expected of any modern hypervisor. OpenShift Virtualization allows for the simple and easy process of migrating your virtual machine workloads between nodes and storageclasses in the cluster as determined by either the Kubernetes scheduler, or you the end user. 
+Live migration of workloads between compute nodes and storage types is a crucial feature expected of any modern hypervisor. OpenShift Virtualization allows for the simple and easy process of migrating your virtual machine workloads between nodes and storageclasses in the cluster as determined by either the Kubernetes scheduler, or you the end user.
 
-In a container-based application there are often multiple replicas of a container spread across the cluster ensuring availability, and should a hosting node run out of resources, a container is simply killed and redeployed elsewhere in the cluster. The same does not apply to virtual machines which are stateful workloads with persistent storage. Thus virtual workloads may need to be live migrated for reasons related to physical resource limitations, planned maintenance, or to enhance performance of particular workload. 
+In a container-based application there are often multiple replicas of a container spread across the cluster ensuring availability, and should a hosting node run out of resources, a container is simply killed and redeployed elsewhere in the cluster. The same does not apply to virtual machines which are stateful workloads with persistent storage. Thus virtual workloads may need to be live migrated for reasons related to physical resource limitations, planned maintenance, or to enhance performance of particular workload.
 
 
 .*Goals*
@@ -62,7 +62,7 @@ image::exercise1/01-vm-start-001.png[title="Start the Virtual Machine", link=sel
 +
 image::exercise1/01-vm-start-002.png[title="Running Virtual Machine", link=self, window=blank, width=100%]
 
-.To see the node the Virtual Machine is currently running on, look at the *General* box on the right hand side of the *VirtualMachine details* page for the *Node* name. In the following screenshot, the node is *worker-cluster-bj7mh-1*.
+. To see the node the Virtual Machine is currently running on, look at the *General* box on the right hand side of the *VirtualMachine details* page for the *Node* name. In the following screenshot, the node is *worker-cluster-bj7mh-1*.
 +
 image::exercise1/01-image-compute-002.png[title="Virtual machine details", link=self, window=blank, width=100%]
 
@@ -112,10 +112,10 @@ image::exercise1/01-image-compute-014.png[title="VM is running", link=self, wind
 
 [[storage_mig]]
 == Storage Migration
-Storage environments often have their own lifecycles, maintenance schedules, and performance profiles. It may become necessary to migrate virtual workloads to a new storage class should the backing storage system need to undergo maintenance window or be replaced entirely. Likewise, many customers create custom storage classes based on tiers of performance. A virtual machine running a database that needs to be highly responsive may map to a storageclass provided by an all-flash system, while a simple virtual webserver may find itself attached to a storageclass from a traditial spinning disk array. A customer may also find their demands changing and the ability to live migrate the VMs helps to reduce downtime, as such OpenShift Virtualization allows the migration of PVCs from one StorageClass to another while the virtual machine is running.
+Storage environments often have their own lifecycles, maintenance schedules, and performance profiles. It may become necessary to migrate virtual workloads to a new storage class should the backing storage system need to undergo maintenance window or be replaced entirely. Likewise, many customers create custom storage classes based on tiers of performance. A virtual machine running a database that needs to be highly responsive may map to a storageclass provided by an all-flash system, while a simple virtual webserver may find itself attached to a storageclass from a traditional spinning disk array. A customer may also find their demands changing and the ability to live migrate the VMs helps to reduce downtime. For all these case, OpenShift Virtualization allows the migration of PVCs from one StorageClass to another while the virtual machine is running.
 
 
-. Let's begin by taking a look at the storage on our *live-migrate-vm1* virtual machine. 
+. Let's begin by taking a look at the storage on our *live-migrate-vm1* virtual machine.
 . Click on the *Configuration* tab and select *Storage*. You can see that the Virtual Machine currently has a single 30GB bootable disk that is using the storage class called *ocs-external-storagecluster-ceph-rbd*.
 +
 image::exercise1/01-image-storage-002.png[title="View storage details", link=self, window=blank, width=100%]
@@ -188,4 +188,4 @@ IMPORTANT: Prior to moving on to the next section, please shut down the *live-mi
 
 == Summary
 
-In this module we explored how we are able to migrate virtual machines between nodes in our cluster while they are still running. This live migration feature allows you to let OpenShift automate the selection of the destination node basedon free resources, or allows you as the administrator to select the node to where the VM migrates. We also explored the storage live migration feature which migrates a virtual machine's disk from one storage class to another while the machine continues to operate
+In this module we explored how we are able to migrate virtual machines between nodes in our cluster while they are still running. This live migration feature allows you to let OpenShift automate the selection of the destination node based on free resources, or allows you as the administrator to select the node to where the VM migrates. We also explored the storage live migration feature which migrates a virtual machine's disk from one storage class to another while the machine continues to operate
